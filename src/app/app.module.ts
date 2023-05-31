@@ -23,6 +23,8 @@ import { MatListModule } from '@angular/material/list';
 import { TiposDeDocumentoComponent } from './components/tipos-de-documento/tipos-de-documento.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { TipoDeDocumentoDialogComponent } from './components/tipo-de-documento-dialog/tipo-de-documento-dialog.component';
+import { TipoDeDocumentoDeleteDialogComponent } from './components/tipo-de-documento-delete-dialog/tipo-de-documento-delete-dialog.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +34,8 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
     TableComponent,
     NavigationComponent,
     TiposDeDocumentoComponent,
+    TipoDeDocumentoDialogComponent,
+    TipoDeDocumentoDeleteDialogComponent,
   ],
   imports: [
     BrowserModule,

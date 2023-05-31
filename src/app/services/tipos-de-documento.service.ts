@@ -31,12 +31,25 @@ export class TiposDeDocumentoService {
   }
 
   create(tipoDeDocumento: TipoDeDocumento): Observable<TipoDeDocumento> {
-    return this.http.post<TipoDeDocumento>(this.apiURL, tipoDeDocumento);
+    const requestBody = {
+      id: 0,
+      activo: true,
+      nombre: tipoDeDocumento.nombre,
+    };
+  
+    return this.http.post<TipoDeDocumento>(this.apiURL, requestBody);
   }
-
+  
   update(id: number, tipoDeDocumento: TipoDeDocumento): Observable<TipoDeDocumento> {
-    return this.http.put<TipoDeDocumento>(`${this.apiURL}/${id}`, tipoDeDocumento);
+    const requestBody = {
+      id: id,
+      activo: true,
+      nombre: tipoDeDocumento.nombre,
+    };
+  
+    return this.http.put<TipoDeDocumento>(`${this.apiURL}/${id}`, requestBody);
   }
+  
 
   delete(id: number): Observable<any> {
     return this.http.delete<any>(`${this.apiURL}/${id}`);
