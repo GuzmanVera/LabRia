@@ -1,0 +1,33 @@
+<button mat-raised-button color="primary" (click)="openCreateDialog()">Crear Estado Posible</button>
+
+<div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource">
+  
+      <!-- Columnas de la tabla -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef> ID </th>
+        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="nombre">
+        <th mat-header-cell *matHeaderCellDef> Nombre </th>
+        <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+      </ng-container>
+  
+      <!-- Botones de editar y eliminar -->
+      <!-- Botones de editar y eliminar -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Acciones </th>
+        <td mat-cell *matCellDef="let element">
+          <!-- El botón de editar llama a "openEditDialog" con el elemento actual como argumento -->
+          <button mat-button color="primary" (click)="openEditDialog(element)">Editar</button>
+          <!-- El botón de eliminar llama a "openDeleteDialog" con el elemento actual como argumento -->
+          <button mat-button color="warn"  (click)="openDeleteDialog(element)">Eliminar</button>
+        </td>
+      </ng-container>
+
+  
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
