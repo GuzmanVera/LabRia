@@ -1,6 +1,15 @@
+<app-navigation>
 <button mat-raised-button color="primary" (click)="openCreateDialog()">Crear Área</button>
 
 <div class="mat-elevation-z8">
+  <div class="filter">
+    <mat-form-field class="filter-input">
+      <mat-label>Filtro</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Filtrar por nombre">
+    </mat-form-field>
+  </div>
+
+
     <table mat-table [dataSource]="dataSource">
   
       <!-- Columnas de la tabla -->
@@ -12,6 +21,11 @@
       <ng-container matColumnDef="nombre">
         <th mat-header-cell *matHeaderCellDef> Nombre </th>
         <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="activo">
+        <th mat-header-cell *matHeaderCellDef (click)="sortData('activo')"> Activo </th>
+        <td mat-cell *matCellDef="let element"> {{element.activo ? 'Sí' : 'No'}} </td>
       </ng-container>
   
       <!-- Botones de editar y eliminar -->
@@ -26,8 +40,11 @@
         </td>
       </ng-container>
 
-  
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+
+    <mat-paginator [length]="totalCount" [pageSize]="pageEvent.pageSize" [pageSizeOptions]="[5, 10, 20]" (page)="onPaginateChange($event)" showFirstLastButtons></mat-paginator>
+
   </div>
+</app-navigation>

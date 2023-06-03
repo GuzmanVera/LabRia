@@ -12,18 +12,16 @@ export class TiposDeIntegranteService {
 
   constructor(private http: HttpClient) { }
 
-  getAll(): Observable<TipoDeIntegrante[]> {
+  getAll(offset: number, limit: number, filterValue?: string, sort?: string): Observable<any> {
     const body = {
-      limit: 5,
-      offset: 0,
+      limit: limit,
+      offset: offset,
       id: 0,
-      filters: { activo: true, nombre: "" },
-      orders: [""]
+      filters: { activo: null, nombre: filterValue || "" },
+      orders: sort ? [sort] : [""]
     };
-    
-    return this.http.post<any>(`${this.apiURL}/Paged`, body).pipe(
-      map(response => response.list)
-    );
+  
+    return this.http.post<any>(`${this.apiURL}/Paged`, body);
   }
 
   get(id: number): Observable<TipoDeIntegrante> {
@@ -33,7 +31,7 @@ export class TiposDeIntegranteService {
   create(tipoDeIntegrante: TipoDeIntegrante): Observable<TipoDeIntegrante> {
     const requestBody = {
       id: 0,
-      activo: true,
+      activo: tipoDeIntegrante.activo,
       nombre: tipoDeIntegrante.nombre,
       orden: tipoDeIntegrante.orden
     };
@@ -44,7 +42,7 @@ export class TiposDeIntegranteService {
   update(id: number, tipoDeIntegrante: TipoDeIntegrante): Observable<TipoDeIntegrante> {
     const requestBody = {
       id: id,
-      activo: true,
+      activo: tipoDeIntegrante.activo,
       nombre: tipoDeIntegrante.nombre,
       orden: tipoDeIntegrante.orden
     };

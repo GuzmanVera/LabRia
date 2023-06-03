@@ -4,6 +4,7 @@ import { TipoDeIntegrante } from 'src/app/models/tipo-de-integrante';
 import { TiposDeIntegranteService } from 'src/app/services/tipos-de-integrante.service';
 import { TipoDeIntegranteDialogComponent } from '../tipo-de-integrante-dialog/tipo-de-integrante-dialog.component';
 import { TipoDeDocumentoDeleteDialogComponent } from '../tipo-de-documento-delete-dialog/tipo-de-documento-delete-dialog.component';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-tipo-de-integrante',
@@ -11,8 +12,32 @@ import { TipoDeDocumentoDeleteDialogComponent } from '../tipo-de-documento-delet
   styleUrls: ['./tipo-de-integrante.component.scss']
 })
 export class TipoDeIntegranteComponent {
-  displayedColumns: string[] = ['id', 'nombre', 'orden', 'actions'];
+  displayedColumns: string[] = ['id', 'nombre','activo', 'orden', 'actions'];
   dataSource: TipoDeIntegrante[] = [];  // inicializa el dataSource aquí
+  totalCount: number = 0;
+  pageEvent: PageEvent = {pageIndex: 0, pageSize: 10, length: 0};
+  sortDirection: 'asc' | 'desc' = 'asc'; // Dirección de la ordenación
+  sortField: string = ''; // Campo de ordenación
+
+  onPaginateChange(event: PageEvent) {
+    this.pageEvent = event;
+    
+    this.getTiposDeIntegrante();
+  }
+  
+  sortData(field: string) {
+    // Si el campo es el mismo que el anterior, cambiamos la dirección de la ordenación
+    if (this.sortField === field) {
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      // Si es un nuevo campo, ordenamos ascendente por defecto
+      this.sortField = field;
+      this.sortDirection = 'asc';
+    }
+  
+    // Actualizamos la consulta a la API con el nuevo ordenamiento
+    this.getTiposDeIntegrante();
+  }
 
   constructor(private tiposDeIntegranteService: TiposDeIntegranteService, public dialog: MatDialog) {}
 
@@ -20,13 +45,26 @@ export class TipoDeIntegranteComponent {
     this.getTiposDeIntegrante();
   }
 
+  filterValue!: string;
+
+ applyFilter(event: Event) {
+  const filterValue = (event.target as HTMLInputElement).value;
+  this.filterValue = filterValue;
+  this.getTiposDeIntegrante();
+}
+
   getTiposDeIntegrante(): void {
-    this.tiposDeIntegranteService.getAll().subscribe(
-      data => {
-        this.dataSource = data;
+    const pageIndex = this.pageEvent ? this.pageEvent.pageIndex : 0;
+    const pageSize = this.pageEvent ? this.pageEvent.pageSize : 10;
+    const offset = pageIndex * pageSize;
+    const sort = this.sortField ? `${this.sortField} ${this.sortDirection}` : '';
+
+    this.tiposDeIntegranteService.getAll(offset, pageSize, this.filterValue, sort).subscribe(
+      response => {
+        this.dataSource = response.list;
+        this.totalCount = response.totalCount;
       },
       error => {
-        // Manejo de errores
         console.log('Hubo un error al recuperar los tipos de documento:', error);
       }
     );
@@ -35,7 +73,10 @@ export class TipoDeIntegranteComponent {
   openCreateDialog(): void {
     const dialogRef = this.dialog.open(TipoDeIntegranteDialogComponent, {
       width: '250px',
-      data: {} // Datos iniciales para el diálogo, en este caso vacíos para la creación.
+      data: {
+        nombre: '',
+        activo: false,
+      } // Datos iniciales para el diálogo, en este caso vacíos para la creación.
     });
   
     dialogRef.afterClosed().subscribe(result => {

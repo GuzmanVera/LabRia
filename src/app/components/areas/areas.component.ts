@@ -4,6 +4,7 @@ import { Areas } from 'src/app/models/areas';
 import { AreasService } from 'src/app/services/areas.service';
 import { AreasDialogComponent } from '../areas-dialog/areas-dialog.component';
 import { AreasDeleteDialogComponent } from '../areas-delete-dialog/areas-delete-dialog.component';
+import { PageEvent } from '@angular/material/paginator';
 
 
 @Component({
@@ -12,22 +13,59 @@ import { AreasDeleteDialogComponent } from '../areas-delete-dialog/areas-delete-
   styleUrls: ['./areas.component.scss']
 })
 export class AreasComponent {
-  displayedColumns: string[] = ['id', 'nombre', 'actions'];
+  displayedColumns: string[] = ['id', 'nombre', 'activo', 'actions'];
   dataSource: Areas[] = [];  // inicializa el dataSource aquí
+  totalCount: number = 0;
+  pageEvent: PageEvent = {pageIndex: 0, pageSize: 10, length: 0};
+  sortDirection: 'asc' | 'desc' = 'asc'; // Dirección de la ordenación
+  sortField: string = ''; // Campo de ordenación
 
   constructor(private AreasService: AreasService, public dialog: MatDialog) {}
+
+  onPaginateChange(event: PageEvent) {
+    this.pageEvent = event;
+    
+    this.getAreas();
+  }
+
+  sortData(field: string) {
+    // Si el campo es el mismo que el anterior, cambiamos la dirección de la ordenación
+    if (this.sortField === field) {
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      // Si es un nuevo campo, ordenamos ascendente por defecto
+      this.sortField = field;
+      this.sortDirection = 'asc';
+    }
+  
+    // Actualizamos la consulta a la API con el nuevo ordenamiento
+    this.getAreas();
+  }
 
   ngOnInit(): void {
     this.getAreas();
   }
 
+  filterValue!: string;
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.filterValue = filterValue;
+    this.getAreas();
+  }
+
   getAreas(): void {
-    this.AreasService.getAll().subscribe(
-      data => {
-        this.dataSource = data;
+    const pageIndex = this.pageEvent ? this.pageEvent.pageIndex : 0;
+    const pageSize = this.pageEvent ? this.pageEvent.pageSize : 10;
+    const offset = pageIndex * pageSize;
+    const sort = this.sortField ? `${this.sortField} ${this.sortDirection}` : '';
+
+    this.AreasService.getAll(offset, pageSize, this.filterValue, sort).subscribe(
+      response => {
+        this.dataSource = response.list;
+        this.totalCount = response.totalCount;
       },
       error => {
-        // Manejo de errores
         console.log('Hubo un error al recuperar los tipos de documento:', error);
       }
     );
@@ -36,7 +74,10 @@ export class AreasComponent {
   openCreateDialog(): void {
     const dialogRef = this.dialog.open(AreasDialogComponent, {
       width: '250px',
-      data: {} // Datos iniciales para el diálogo, en este caso vacíos para la creación.
+      data: {
+        nombre: '',
+        activo: false,
+      } // Datos iniciales para el diálogo, en este caso vacíos para la creación.
     });
   
     dialogRef.afterClosed().subscribe(result => {

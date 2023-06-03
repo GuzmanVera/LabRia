@@ -14,34 +14,36 @@ export class AreasService {
 
   constructor(private http: HttpClient) { }
 
-  getAll(): Observable<Areas[]> {
+  getAll(offset: number, limit: number, filterValue?: string, sort?: string): Observable<any> {
     const body = {
-      limit: 5,
-      offset: 0,
+      limit: limit,
+      offset: offset,
       id: 0,
-      filters: { activo: true, nombre: "" },
-      orders: [""]
+      filters: { activo: null, nombre: filterValue || "" },
+      orders: sort ? [sort] : [""]
     };
-    
-    return this.http.post<any>(`${this.apiURL}/Paged`, body).pipe(
-      map(response => response.list)
-    );
+  
+    return this.http.post<any>(`${this.apiURL}/Paged`, body);
+  }
+
+  get(id: number): Observable<Areas> {
+    return this.http.get<Areas>(`${this.apiURL}/${id}`);
   }
 
   create(areas: Areas): Observable<Areas> {
     const requestBody = {
       id: 0,
-      activo: true,
+      activo: areas.activo,
       nombre: areas.nombre,
     };
-  
+    console.log(requestBody);
     return this.http.post<Areas>(this.apiURL, requestBody);
   }
 
   update(id: number, areas: Areas): Observable<Areas> {
     const requestBody = {
       id: id,
-      activo: true,
+      activo: areas.activo,
       nombre: areas.nombre,
     };
   

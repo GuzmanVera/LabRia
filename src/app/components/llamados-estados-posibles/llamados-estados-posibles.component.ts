@@ -4,6 +4,7 @@ import { LlamadosEstadosPosibles } from 'src/app/models/llamados-estados-posible
 import { LlamadosEstadosPosiblesService } from 'src/app/services/llamados-estados-posibles.service';
 import { LlamadosEstadosPosiblesDialogComponent } from '../llamados-estados-posibles-dialog/llamados-estados-posibles-dialog.component';
 import { TipoDeDocumentoDeleteDialogComponent } from '../tipo-de-documento-delete-dialog/tipo-de-documento-delete-dialog.component';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-llamados-estados-posibles',
@@ -11,22 +12,59 @@ import { TipoDeDocumentoDeleteDialogComponent } from '../tipo-de-documento-delet
   styleUrls: ['./llamados-estados-posibles.component.scss']
 })
 export class LlamadosEstadosPosiblesComponent {
-  displayedColumns: string[] = ['id', 'nombre', 'actions'];
+  displayedColumns: string[] = ['id', 'nombre', 'activo', 'actions'];
   dataSource: LlamadosEstadosPosibles[] = [];  // inicializa el dataSource aquí
+  totalCount: number = 0;
+  pageEvent: PageEvent = {pageIndex: 0, pageSize: 10, length: 0};
+  sortDirection: 'asc' | 'desc' = 'asc'; // Dirección de la ordenación
+  sortField: string = ''; // Campo de ordenación
+
+  onPaginateChange(event: PageEvent) {
+    this.pageEvent = event;
+    
+    this.getLlamadosEstadosPosibles();
+  }
+  
+  sortData(field: string) {
+    // Si el campo es el mismo que el anterior, cambiamos la dirección de la ordenación
+    if (this.sortField === field) {
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      // Si es un nuevo campo, ordenamos ascendente por defecto
+      this.sortField = field;
+      this.sortDirection = 'asc';
+    }
+  
+    // Actualizamos la consulta a la API con el nuevo ordenamiento
+    this.getLlamadosEstadosPosibles();
+  }
 
   constructor(private llamadosEstadosPosiblesService: LlamadosEstadosPosiblesService, public dialog: MatDialog) {}
 
   ngOnInit(): void {
-    this.getTiposDeDocumento();
+    this.getLlamadosEstadosPosibles();
   }
 
-  getTiposDeDocumento(): void {
-    this.llamadosEstadosPosiblesService.getAll().subscribe(
-      data => {
-        this.dataSource = data;
+  filterValue!: string;
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.filterValue = filterValue;
+    this.getLlamadosEstadosPosibles();
+  }
+
+  getLlamadosEstadosPosibles(): void {
+    const pageIndex = this.pageEvent ? this.pageEvent.pageIndex : 0;
+    const pageSize = this.pageEvent ? this.pageEvent.pageSize : 10;
+    const offset = pageIndex * pageSize;
+    const sort = this.sortField ? `${this.sortField} ${this.sortDirection}` : '';
+
+    this.llamadosEstadosPosiblesService.getAll(offset, pageSize, this.filterValue, sort).subscribe(
+      response => {
+        this.dataSource = response.list;
+        this.totalCount = response.totalCount;
       },
       error => {
-        // Manejo de errores
         console.log('Hubo un error al recuperar los tipos de documento:', error);
       }
     );
@@ -35,7 +73,10 @@ export class LlamadosEstadosPosiblesComponent {
   openCreateDialog(): void {
     const dialogRef = this.dialog.open(LlamadosEstadosPosiblesDialogComponent, {
       width: '250px',
-      data: {} // Datos iniciales para el diálogo, en este caso vacíos para la creación.
+      data: {
+        nombre: '',
+        activo: false,
+      } // Datos iniciales para el diálogo, en este caso vacíos para la creación.
     });
   
     dialogRef.afterClosed().subscribe(result => {
@@ -45,7 +86,7 @@ export class LlamadosEstadosPosiblesComponent {
           data => {
             // Añadir el nuevo tipo de documento a la tabla.
             this.dataSource.push(data);
-            this.getTiposDeDocumento()
+            this.getLlamadosEstadosPosibles()
           },
           error => {
             // Manejo de errores
@@ -54,7 +95,7 @@ export class LlamadosEstadosPosiblesComponent {
         );
       }
     });
-    this.getTiposDeDocumento()
+    this.getLlamadosEstadosPosibles()
   }
   
   openEditDialog(llamadosEstadosPosibles: LlamadosEstadosPosibles): void {
@@ -72,7 +113,7 @@ export class LlamadosEstadosPosiblesComponent {
             const index = this.dataSource.findIndex(td => td.id === data.id);
             if (index !== -1) {
               this.dataSource[index] = data;
-              this.getTiposDeDocumento()
+              this.getLlamadosEstadosPosibles()
             }
           },
           error => {
@@ -103,7 +144,7 @@ export class LlamadosEstadosPosiblesComponent {
               this.dataSource.splice(index, 1);
               
             }
-            this.getTiposDeDocumento()
+            this.getLlamadosEstadosPosibles()
           },
           error => {
             // Manejo de errores

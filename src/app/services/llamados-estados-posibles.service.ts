@@ -12,18 +12,16 @@ export class LlamadosEstadosPosiblesService {
 
   constructor(private http: HttpClient) { }
 
-  getAll(): Observable<LlamadosEstadosPosibles[]> {
+  getAll(offset: number, limit: number, filterValue?: string, sort?: string): Observable<any> {
     const body = {
-      limit: 5,
-      offset: 0,
+      limit: limit,
+      offset: offset,
       id: 0,
-      filters: { activo: true, nombre: "" },
-      orders: [""]
+      filters: { activo: null, nombre: filterValue || "" },
+      orders: sort ? [sort] : [""]
     };
-    
-    return this.http.post<any>(`${this.apiURL}/Paged`, body).pipe(
-      map(response => response.list)
-    );
+  
+    return this.http.post<any>(`${this.apiURL}/Paged`, body);
   }
 
   get(id: number): Observable<LlamadosEstadosPosibles> {
@@ -33,7 +31,7 @@ export class LlamadosEstadosPosiblesService {
   create(llamadoEstadosPosibles: LlamadosEstadosPosibles): Observable<LlamadosEstadosPosibles> {
     const requestBody = {
       id: 0,
-      activo: true,
+      activo: llamadoEstadosPosibles.activo,
       nombre: llamadoEstadosPosibles.nombre,
     };
   
@@ -43,7 +41,7 @@ export class LlamadosEstadosPosiblesService {
   update(id: number, llamadoEstadosPosibles: LlamadosEstadosPosibles): Observable<LlamadosEstadosPosibles> {
     const requestBody = {
       id: id,
-      activo: true,
+      activo: llamadoEstadosPosibles.activo,
       nombre: llamadoEstadosPosibles.nombre,
     };
   
