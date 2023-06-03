@@ -25,7 +25,8 @@ import { TipoDeIntegranteDeleteDialogComponent } from './components/tipo-de-inte
 import { LlamadosEstadosPosiblesComponent } from './components/llamados-estados-posibles/llamados-estados-posibles.component';
 import { LlamadosEstadosPosiblesDialogComponent } from './components/llamados-estados-posibles-dialog/llamados-estados-posibles-dialog.component';
 import { LlamadosEstadosPosiblesDeleteDialogComponent } from './components/llamados-estados-posibles-delete-dialog/llamados-estados-posibles-delete-dialog.component';
-
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './services/auth.interceptor';
 @NgModule({
   declarations: [
     AppComponent,
@@ -56,7 +57,9 @@ import { LlamadosEstadosPosiblesDeleteDialogComponent } from './components/llama
     BrowserAnimationsModule,
     FlexLayoutModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
