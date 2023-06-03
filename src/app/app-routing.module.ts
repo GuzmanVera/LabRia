@@ -4,6 +4,8 @@ import { TiposDeDocumentoComponent } from './components/tipos-de-documento/tipos
 import { AreasComponent } from './components/areas/areas.component';
 import { TipoDeIntegranteComponent } from './components/tipo-de-integrante/tipo-de-integrante.component';
 import { LlamadosEstadosPosiblesComponent } from './components/llamados-estados-posibles/llamados-estados-posibles.component';
+import { LoginPageComponent } from './login-page/login-page.component';
+import { NavigationComponent } from './navigation/navigation.component';
 
 const routes: Routes = [
   {
@@ -21,6 +23,14 @@ const routes: Routes = [
   {
     path:'llamadosEstadosPosibles',
     component: LlamadosEstadosPosiblesComponent
+  },
+  {
+    path:'login',
+    component: LoginPageComponent
+  },
+  {
+    path:'navbar',
+    component: NavigationComponent
   }
 ];
 

@@ -1,4 +1,30 @@
+* {
+  box-sizing: border-box;
+}
 
+.login-background {
+  display: grid;
+  place-items: center;
+  height: 100vh;
+  margin: 0;
+  padding: 0 24px;
+  background-image: url("../../assets/bg.svg");
+  background-size: 2000px 1000px;
+  background-position: -500px 0;
+  color: #f9f9f9;
+  font-family: "Euclid Circular A";
+  animation: gradient 10s infinite alternate linear;
+
+  @media (width >= 500px) {
+    padding: 0;
+  }
+
+  @keyframes gradient {
+    100% {
+      background-size: 4000px 1000px;
+    }
+  }
+}
 
 .login {
   position: fixed;

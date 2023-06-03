@@ -5,14 +5,41 @@ import { TipoDeDocumento } from 'src/app/models/tipo-de-documento';
 import { Observable } from 'rxjs';
 import { TipoDeDocumentoDialogComponent } from '../tipo-de-documento-dialog/tipo-de-documento-dialog.component';
 import { TipoDeDocumentoDeleteDialogComponent } from '../tipo-de-documento-delete-dialog/tipo-de-documento-delete-dialog.component';
+import { PageEvent } from '@angular/material/paginator';
 @Component({
   selector: 'app-tipos-de-documento',
   templateUrl: './tipos-de-documento.component.html',
   styleUrls: ['./tipos-de-documento.component.scss']
 })
 export class TiposDeDocumentoComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'nombre', 'actions'];
+  displayedColumns: string[] = ['id', 'nombre', 'activo', 'actions'];
   dataSource: TipoDeDocumento[] = [];  // inicializa el dataSource aquí
+  totalCount: number = 0;
+  pageEvent: PageEvent = {pageIndex: 0, pageSize: 10, length: 0};
+  sortDirection: 'asc' | 'desc' = 'asc'; // Dirección de la ordenación
+  sortField: string = ''; // Campo de ordenación
+
+
+  onPaginateChange(event: PageEvent) {
+    this.pageEvent = event;
+    
+    this.getTiposDeDocumento();
+  }
+  
+  sortData(field: string) {
+    // Si el campo es el mismo que el anterior, cambiamos la dirección de la ordenación
+    if (this.sortField === field) {
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      // Si es un nuevo campo, ordenamos ascendente por defecto
+      this.sortField = field;
+      this.sortDirection = 'asc';
+    }
+  
+    // Actualizamos la consulta a la API con el nuevo ordenamiento
+    this.getTiposDeDocumento();
+  }
+  
 
   constructor(private tiposDeDocumentoService: TiposDeDocumentoService, public dialog: MatDialog) {}
 
@@ -20,27 +47,45 @@ export class TiposDeDocumentoComponent implements OnInit {
     this.getTiposDeDocumento();
   }
 
-  getTiposDeDocumento(): void {
-    this.tiposDeDocumentoService.getAll().subscribe(
-      data => {
-        this.dataSource = data;
-      },
-      error => {
-        // Manejo de errores
-        console.log('Hubo un error al recuperar los tipos de documento:', error);
-      }
-    );
-  }
+  filterValue!: string;
 
+ applyFilter(event: Event) {
+  const filterValue = (event.target as HTMLInputElement).value;
+  this.filterValue = filterValue;
+  this.getTiposDeDocumento();
+}
+
+
+
+getTiposDeDocumento(): void {
+  const pageIndex = this.pageEvent ? this.pageEvent.pageIndex : 0;
+  const pageSize = this.pageEvent ? this.pageEvent.pageSize : 10;
+  const offset = pageIndex * pageSize;
+  const sort = this.sortField ? `${this.sortField} ${this.sortDirection}` : '';
+  
+  this.tiposDeDocumentoService.getAll(offset, pageSize, this.filterValue, sort).subscribe(
+    response => {
+      this.dataSource = response.list;
+      this.totalCount = response.totalCount;
+    },
+    error => {
+      console.log('Hubo un error al recuperar los tipos de documento:', error);
+    }
+  );
+}
   openCreateDialog(): void {
     const dialogRef = this.dialog.open(TipoDeDocumentoDialogComponent, {
       width: '250px',
-      data: {} // Datos iniciales para el diálogo, en este caso vacíos para la creación.
+      data: {
+        nombre: '',
+        activo: false,
+      } 
     });
   
     dialogRef.afterClosed().subscribe(result => {
       // "result" contiene los datos devueltos por el diálogo. En este caso, el tipo de documento a crear.
       if (result) {
+        console.log(result);
         this.tiposDeDocumentoService.create(result).subscribe(
           data => {
             // Añadir el nuevo tipo de documento a la tabla.

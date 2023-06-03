@@ -12,19 +12,18 @@ export class TiposDeDocumentoService {
 
   constructor(private http: HttpClient) { }
 
-  getAll(): Observable<TipoDeDocumento[]> {
+  getAll(offset: number, limit: number, filterValue?: string, sort?: string): Observable<any> {
     const body = {
-      limit: 5,
-      offset: 0,
+      limit: limit,
+      offset: offset,
       id: 0,
-      filters: { activo: true, nombre: "" },
-      orders: [""]
+      filters: { activo: null, nombre: filterValue || "" },
+      orders: sort ? [sort] : [""]
     };
-    
-    return this.http.post<any>(`${this.apiURL}/Paged`, body).pipe(
-      map(response => response.list)
-    );
+  
+    return this.http.post<any>(`${this.apiURL}/Paged`, body);
   }
+  
 
   get(id: number): Observable<TipoDeDocumento> {
     return this.http.get<TipoDeDocumento>(`${this.apiURL}/${id}`);
@@ -33,17 +32,17 @@ export class TiposDeDocumentoService {
   create(tipoDeDocumento: TipoDeDocumento): Observable<TipoDeDocumento> {
     const requestBody = {
       id: 0,
-      activo: true,
+      activo: tipoDeDocumento.activo,
       nombre: tipoDeDocumento.nombre,
     };
-  
+    console.log(requestBody);
     return this.http.post<TipoDeDocumento>(this.apiURL, requestBody);
   }
   
   update(id: number, tipoDeDocumento: TipoDeDocumento): Observable<TipoDeDocumento> {
     const requestBody = {
       id: id,
-      activo: true,
+      activo: tipoDeDocumento.activo,
       nombre: tipoDeDocumento.nombre,
     };
   
