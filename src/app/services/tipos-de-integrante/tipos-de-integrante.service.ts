@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
-import { TipoDeIntegrante } from '../models/tipo-de-integrante';
+import { TipoDeIntegrante } from '../../models/tipo-de-integrante';
 
 @Injectable({
   providedIn: 'root'

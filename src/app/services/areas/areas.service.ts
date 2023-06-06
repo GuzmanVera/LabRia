@@ -1,14 +1,16 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators'; // Importa el operador map
-import { TipoDeDocumento } from '../models/tipo-de-documento';
+import { Areas } from '../../models/areas';
+
+
 
 @Injectable({
   providedIn: 'root'
 })
-export class TiposDeDocumentoService {
-  private apiURL = 'http://localhost:5000/api/TiposDeDocumentos';
+export class AreasService {
+  private apiURL = 'http://localhost:5000/api/Areas';
 
   constructor(private http: HttpClient) { }
 
@@ -23,30 +25,29 @@ export class TiposDeDocumentoService {
   
     return this.http.post<any>(`${this.apiURL}/Paged`, body);
   }
-  
 
-  get(id: number): Observable<TipoDeDocumento> {
-    return this.http.get<TipoDeDocumento>(`${this.apiURL}/${id}`);
+  get(id: number): Observable<Areas> {
+    return this.http.get<Areas>(`${this.apiURL}/${id}`);
   }
 
-  create(tipoDeDocumento: TipoDeDocumento): Observable<TipoDeDocumento> {
+  create(areas: Areas): Observable<Areas> {
     const requestBody = {
       id: 0,
-      activo: tipoDeDocumento.activo,
-      nombre: tipoDeDocumento.nombre,
+      activo: areas.activo,
+      nombre: areas.nombre,
     };
     console.log(requestBody);
-    return this.http.post<TipoDeDocumento>(this.apiURL, requestBody);
+    return this.http.post<Areas>(this.apiURL, requestBody);
   }
-  
-  update(id: number, tipoDeDocumento: TipoDeDocumento): Observable<TipoDeDocumento> {
+
+  update(id: number, areas: Areas): Observable<Areas> {
     const requestBody = {
       id: id,
-      activo: tipoDeDocumento.activo,
-      nombre: tipoDeDocumento.nombre,
+      activo: areas.activo,
+      nombre: areas.nombre,
     };
   
-    return this.http.put<TipoDeDocumento>(`${this.apiURL}/${id}`, requestBody);
+    return this.http.put<Areas>(`${this.apiURL}/${id}`, requestBody);
   }
   
 

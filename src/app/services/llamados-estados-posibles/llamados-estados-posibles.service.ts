@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LlamadosEstadosPosibles } from '../models/llamados-estados-posibles';
+import { LlamadosEstadosPosibles } from '../../models/llamados-estados-posibles';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 

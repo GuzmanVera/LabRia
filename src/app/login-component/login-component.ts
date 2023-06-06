@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login-component',
@@ -10,46 +9,26 @@ import { Router } from '@angular/router';
 })
 
 export class LoginComponent implements OnInit {
-  loginForm!: FormGroup; // El operador "!" le indica a TypeScript que confíe en que esta variable será inicializada posteriormente.
+  loginForm!: FormGroup;
+  errorMessage!: string;
 
-  constructor(private http: HttpClient, private router: Router) {} // Inyectar HttpClient
-
+  constructor(private authService: AuthService) {}
 
   ngOnInit() {
     this.loginForm = new FormGroup({
       'username': new FormControl(null, [Validators.required]),
       'password': new FormControl(null, [Validators.required, Validators.minLength(6)])
     });
-  }
 
+    this.authService.errorMessage.subscribe(message => {
+      this.errorMessage = message;
+    });
+  }
 
   onSubmit() {
-  if (this.loginForm.valid) {
-    const loginData = this.loginForm.value;
-    this.http.post<any>('http://localhost:5000/api/Auth/Login', loginData).subscribe(
-      (res) => {
-        console.log(res);
-        if (res.statusOk) {
-          // Inicio de sesión exitoso
-          // Guardar el token y otros datos en algún lugar, por ejemplo, en el almacenamiento local
-          localStorage.setItem('token', res.token);
-          localStorage.setItem('username', res.nombre);
-          localStorage.setItem('expiration', res.expiration);
-
-
-          // Aquí puedes redirigir al usuario a la página principal, por ejemplo
-          this.router.navigate(['/navbar']);
-        } else {
-          // Inicio de sesión fallido
-          // Mostrar el mensaje de error al usuario
-          console.log(res.statusMessage);
-        }
-      },
-      (err) => {
-        console.log(err);
-        // Aquí puedes manejar los errores
-      }
-    );
+    if (this.loginForm.valid) {
+      this.authService.login(this.loginForm.value);
+    }
   }
-}
+
 }

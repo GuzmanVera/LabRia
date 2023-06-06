@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Areas } from 'src/app/models/areas';
-import { AreasService } from 'src/app/services/areas.service';
-import { AreasDialogComponent } from '../areas-dialog/areas-dialog.component';
-import { AreasDeleteDialogComponent } from '../areas-delete-dialog/areas-delete-dialog.component';
+import { AreasService } from 'src/app/services/areas/areas.service';
+import { AreasDialogComponent } from './areas-dialog/areas-dialog.component';
+import { AreasDeleteDialogComponent } from './areas-delete-dialog/areas-delete-dialog.component';
 import { PageEvent } from '@angular/material/paginator';
 
 
@@ -77,27 +77,25 @@ export class AreasComponent {
       data: {
         nombre: '',
         activo: false,
-      } // Datos iniciales para el diálogo, en este caso vacíos para la creación.
+      } 
     });
   
     dialogRef.afterClosed().subscribe(result => {
-      // "result" contiene los datos devueltos por el diálogo. En este caso, el tipo de documento a crear.
       if (result) {
-        this.AreasService.create(result).subscribe(
-          data => {
-            // Añadir el nuevo tipo de documento a la tabla.
+        this.AreasService.create(result).subscribe({
+          next: (data) => {
             this.dataSource.push(data);
             this.getAreas()
           },
-          error => {
-            // Manejo de errores
+          error: (error) => {
             console.log('Hubo un error al crear el tipo de documento:', error);
           }
-        );
+        });
       }
     });
     this.getAreas()
   }
+  
   
   openEditDialog(areas: Areas): void {
     const dialogRef = this.dialog.open(AreasDialogComponent, {

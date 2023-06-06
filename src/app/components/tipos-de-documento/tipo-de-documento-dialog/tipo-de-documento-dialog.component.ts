@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { TipoDeDocumento } from '../../models/tipo-de-documento';
+import { TipoDeDocumento } from '../../../models/tipo-de-documento';
 
 @Component({
   selector: 'app-tipo-de-documento-dialog',

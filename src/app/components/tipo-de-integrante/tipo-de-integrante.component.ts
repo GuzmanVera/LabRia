@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TipoDeIntegrante } from 'src/app/models/tipo-de-integrante';
-import { TiposDeIntegranteService } from 'src/app/services/tipos-de-integrante.service';
-import { TipoDeIntegranteDialogComponent } from '../tipo-de-integrante-dialog/tipo-de-integrante-dialog.component';
-import { TipoDeDocumentoDeleteDialogComponent } from '../tipo-de-documento-delete-dialog/tipo-de-documento-delete-dialog.component';
+import { TiposDeIntegranteService } from 'src/app/services/tipos-de-integrante/tipos-de-integrante.service';
+import { TipoDeIntegranteDialogComponent } from './tipo-de-integrante-dialog/tipo-de-integrante-dialog.component';
+import { TipoDeDocumentoDeleteDialogComponent } from '../tipos-de-documento/tipo-de-documento-delete-dialog/tipo-de-documento-delete-dialog.component';
 import { PageEvent } from '@angular/material/paginator';
 
 @Component({
@@ -82,17 +82,17 @@ export class TipoDeIntegranteComponent {
     dialogRef.afterClosed().subscribe(result => {
       // "result" contiene los datos devueltos por el diálogo. En este caso, el tipo de documento a crear.
       if (result) {
-        this.tiposDeIntegranteService.create(result).subscribe(
-          data => {
+        this.tiposDeIntegranteService.create(result).subscribe({
+          next: (data) => {
             // Añadir el nuevo tipo de documento a la tabla.
             this.dataSource.push(data);
             this.getTiposDeIntegrante()
           },
-          error => {
+          error: (error) => {
             // Manejo de errores
             console.log('Hubo un error al crear el tipo de documento:', error);
           }
-        );
+        });
       }
     });
     this.getTiposDeIntegrante()

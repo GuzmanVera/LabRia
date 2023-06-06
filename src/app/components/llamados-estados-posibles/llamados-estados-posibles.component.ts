@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { LlamadosEstadosPosibles } from 'src/app/models/llamados-estados-posibles';
-import { LlamadosEstadosPosiblesService } from 'src/app/services/llamados-estados-posibles.service';
-import { LlamadosEstadosPosiblesDialogComponent } from '../llamados-estados-posibles-dialog/llamados-estados-posibles-dialog.component';
-import { TipoDeDocumentoDeleteDialogComponent } from '../tipo-de-documento-delete-dialog/tipo-de-documento-delete-dialog.component';
+import { LlamadosEstadosPosiblesService } from 'src/app/services/llamados-estados-posibles/llamados-estados-posibles.service';
+import { LlamadosEstadosPosiblesDialogComponent } from './llamados-estados-posibles-dialog/llamados-estados-posibles-dialog.component';
+import { TipoDeDocumentoDeleteDialogComponent } from '../tipos-de-documento/tipo-de-documento-delete-dialog/tipo-de-documento-delete-dialog.component';
 import { PageEvent } from '@angular/material/paginator';
 
 @Component({
@@ -76,23 +76,20 @@ export class LlamadosEstadosPosiblesComponent {
       data: {
         nombre: '',
         activo: false,
-      } // Datos iniciales para el diálogo, en este caso vacíos para la creación.
+      } 
     });
   
     dialogRef.afterClosed().subscribe(result => {
-      // "result" contiene los datos devueltos por el diálogo. En este caso, el tipo de documento a crear.
       if (result) {
-        this.llamadosEstadosPosiblesService.create(result).subscribe(
-          data => {
-            // Añadir el nuevo tipo de documento a la tabla.
+        this.llamadosEstadosPosiblesService.create(result).subscribe({
+          next: (data) => {
             this.dataSource.push(data);
             this.getLlamadosEstadosPosibles()
           },
-          error => {
-            // Manejo de errores
+          error: (error) => {
             console.log('Hubo un error al crear el tipo de documento:', error);
           }
-        );
+        });
       }
     });
     this.getLlamadosEstadosPosibles()

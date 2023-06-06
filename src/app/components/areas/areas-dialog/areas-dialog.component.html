@@ -11,7 +11,7 @@
   </form>
 </div>
 
-<div mat-dialog-actions>
+<div mat-dialog-actions class="custom-dialog-actions">
   <button mat-button (click)="onNoClick()">Cancelar</button>
   <button mat-button [mat-dialog-close]="data" cdkFocusInitial>{{ data.id ? 'Guardar' : 'Crear' }}</button>
 </div>

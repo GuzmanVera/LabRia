@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { TiposDeDocumentoService } from '../../services/tipos-de-documento.service';
+import { TiposDeDocumentoService } from '../../services/tipos-de-documento/tipos-de-documento.service';
 import { TipoDeDocumento } from 'src/app/models/tipo-de-documento';
 import { Observable } from 'rxjs';
-import { TipoDeDocumentoDialogComponent } from '../tipo-de-documento-dialog/tipo-de-documento-dialog.component';
-import { TipoDeDocumentoDeleteDialogComponent } from '../tipo-de-documento-delete-dialog/tipo-de-documento-delete-dialog.component';
+import { TipoDeDocumentoDialogComponent } from './tipo-de-documento-dialog/tipo-de-documento-dialog.component';
+import { TipoDeDocumentoDeleteDialogComponent } from './tipo-de-documento-delete-dialog/tipo-de-documento-delete-dialog.component';
 import { PageEvent } from '@angular/material/paginator';
 @Component({
   selector: 'app-tipos-de-documento',
@@ -86,17 +86,17 @@ getTiposDeDocumento(): void {
       // "result" contiene los datos devueltos por el diálogo. En este caso, el tipo de documento a crear.
       if (result) {
         console.log(result);
-        this.tiposDeDocumentoService.create(result).subscribe(
-          data => {
+        this.tiposDeDocumentoService.create(result).subscribe({
+          next: (data) => {
             // Añadir el nuevo tipo de documento a la tabla.
             this.dataSource.push(data);
             this.getTiposDeDocumento()
           },
-          error => {
+          error: (error) => {
             // Manejo de errores
             console.log('Hubo un error al crear el tipo de documento:', error);
           }
-        );
+      });
       }
     });
     this.getTiposDeDocumento()

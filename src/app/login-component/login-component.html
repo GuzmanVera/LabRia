@@ -1,4 +1,9 @@
 <form [formGroup]="loginForm" class="login-form" (ngSubmit)="onSubmit()">
+  <!-- Mostrar el mensaje de error -->
+   
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{errorMessage}}
+  </div>
   <div class="textbox">
     <input matInput type="email" placeholder="Nombre de usuario" formControlName="username" required>
     <span class="material-symbols-outlined">account_circle</span>
@@ -11,4 +16,6 @@
   </div>
 
   <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">Iniciar Sesión</button>
+
+   
 </form>
