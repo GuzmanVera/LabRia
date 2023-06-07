@@ -19,6 +19,11 @@ export class AuthService {
           localStorage.setItem('token', res.token);
           localStorage.setItem('username', res.nombre);
           localStorage.setItem('expiration', res.expiration);
+          localStorage.setItem('documento', res.documento);
+          localStorage.setItem('tipoDocumento', res.tipoDocumento);
+          localStorage.setItem('imagen', res.imagen);
+          localStorage.setItem('email', res.email);
+          localStorage.setItem('roles', JSON.stringify(res.roles)); // Los roles son un array, por lo que los convertimos a un string JSON
           this.router.navigate(['/navbar']);
           this.errorMessage.next(''); // Limpiar el mensaje de error
         } else {
@@ -33,5 +38,22 @@ export class AuthService {
     });
     
   }
+  
+  isLoggedIn(): boolean {
+    const expiration = localStorage.getItem('expiration');
+    if (expiration) {
+      const expirationDate = new Date(expiration);
+      return expirationDate > new Date();
+    }
+    return false;
+  }
+
+  logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('expiration');
+    localStorage.removeItem('username');
+    this.router.navigate(['/login']);
+  }
+
   
 }

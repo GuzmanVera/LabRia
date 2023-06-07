@@ -13,6 +13,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
+
 
 
 @NgModule({
@@ -34,7 +36,8 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
     MatPaginatorModule,
     MatSortModule,
     MatDialogModule,
-    MatSortModule
+    MatSortModule,
+    MatMenuModule
     
   ]
 })

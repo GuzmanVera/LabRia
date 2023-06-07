@@ -13,18 +13,39 @@
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar color="primary">
-      <button
-        type="button"
-        aria-label="Toggle sidenav"
-        mat-icon-button
-        (click)="drawer.toggle()"
-        *ngIf="isHandset$ | async">
-        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-      </button>
-      <span>lab-ria</span>
+        <button
+            type="button"
+            aria-label="Toggle sidenav"
+            mat-icon-button
+            (click)="drawer.toggle()"
+            *ngIf="isHandset$ | async">
+            <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+        </button>
+        <span>lab-ria</span>
+        <!-- Add User Profile Icon here -->
+        <button
+            *ngIf="authService.isLoggedIn()"
+            mat-icon-button
+            [matMenuTriggerFor]="menu">
+            <mat-icon>account_circle</mat-icon>
+        </button>
     </mat-toolbar>
     <!-- Add Content Here -->
     <ng-content></ng-content>
-  </mat-sidenav-content>
+</mat-sidenav-content>
+
+<!-- User Profile Menu -->
+<mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="redirect('miPerfil')">
+        <mat-icon>visibility</mat-icon>
+        <span>Ver perfil</span>
+    </button>
+    <button mat-menu-item (click)="authService.logout()"> 
+      <mat-icon>exit_to_app</mat-icon>
+      <span>Salir</span>
+  </button>
+</mat-menu>
+
+
   
 </mat-sidenav-container>

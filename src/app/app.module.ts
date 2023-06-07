@@ -27,6 +27,7 @@ import { LlamadosEstadosPosiblesDialogComponent } from './components/llamados-es
 import { LlamadosEstadosPosiblesDeleteDialogComponent } from './components/llamados-estados-posibles/llamados-estados-posibles-delete-dialog/llamados-estados-posibles-delete-dialog.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './services/auth.interceptor';
+import { MiPerfilComponent } from './components/perfil/mi-perfil/mi-perfil.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -46,6 +47,7 @@ import { AuthInterceptor } from './services/auth.interceptor';
     LlamadosEstadosPosiblesComponent,
     LlamadosEstadosPosiblesDialogComponent,
     LlamadosEstadosPosiblesDeleteDialogComponent,
+    MiPerfilComponent,
   ],
   imports: [
     BrowserModule,

@@ -6,6 +6,7 @@ import { TipoDeIntegranteComponent } from './components/tipo-de-integrante/tipo-
 import { LlamadosEstadosPosiblesComponent } from './components/llamados-estados-posibles/llamados-estados-posibles.component';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { NavigationComponent } from './navigation/navigation.component';
+import { MiPerfilComponent } from './components/perfil/mi-perfil/mi-perfil.component';
 
 const routes: Routes = [
   {
@@ -31,7 +32,12 @@ const routes: Routes = [
   {
     path:'navbar',
     component: NavigationComponent
+  },
+  {
+    path:'miPerfil',
+    component: MiPerfilComponent
   }
+
 ];
 
 @NgModule({
