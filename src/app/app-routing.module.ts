@@ -7,6 +7,8 @@ import { LlamadosEstadosPosiblesComponent } from './components/llamados-estados-
 import { LoginPageComponent } from './login-page/login-page.component';
 import { NavigationComponent } from './navigation/navigation.component';
 import { MiPerfilComponent } from './components/perfil/mi-perfil/mi-perfil.component';
+import { PersonasComponent } from './components/personas/personas.component';
+import { UsuariosComponent } from './components/usuarios/usuarios.component';
 
 const routes: Routes = [
   {
@@ -36,6 +38,14 @@ const routes: Routes = [
   {
     path:'miPerfil',
     component: MiPerfilComponent
+  },
+  {
+    path:'personas',
+    component: PersonasComponent
+  },
+  {
+    path:'usuarios',
+    component: UsuariosComponent
   }
 
 ];

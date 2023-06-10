@@ -1,0 +1,32 @@
+<h2 mat-dialog-title>{{ data.id ? 'Editar' : 'Crear' }} Personas</h2>
+
+<div mat-dialog-content>
+  <form>
+    <mat-checkbox [(ngModel)]="data.activo" name="activo">Activo</mat-checkbox>
+
+    <mat-form-field>
+      <mat-label>Nombre</mat-label>
+      <input matInput [(ngModel)]="data.primerNombre" name="primerNombre">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Nombre</mat-label>
+      <input matInput [(ngModel)]="data.segundoNombre" name="segundoNombre">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Nombre</mat-label>
+      <input matInput [(ngModel)]="data.primerApellido" name="primerApellido">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Nombre</mat-label>
+      <input matInput [(ngModel)]="data.segundoApellido" name="segundoApellido">
+    </mat-form-field>
+  </form>
+</div>
+
+<div mat-dialog-actions class="custom-dialog-actions">
+  <button mat-button (click)="onNoClick()">Cancelar</button>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>{{ data.id ? 'Guardar' : 'Crear' }}</button>
+</div>

@@ -28,6 +28,12 @@ import { LlamadosEstadosPosiblesDeleteDialogComponent } from './components/llama
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './services/auth.interceptor';
 import { MiPerfilComponent } from './components/perfil/mi-perfil/mi-perfil.component';
+import { PersonasComponent } from './components/personas/personas.component';
+import { PersonasDialogComponent } from './components/personas/personas-dialog/personas-dialog.component';
+import { PersonasDeleteDialogComponent } from './components/personas/personas-delete-dialog/personas-delete-dialog.component';
+import { UsuariosComponent } from './components/usuarios/usuarios.component';
+import { UsuariosDialogComponent } from './components/usuarios/usuarios-dialog/usuarios-dialog.component';
+import { UsuariosDeleteDialogComponent } from './components/usuarios/usuarios-delete-dialog/usuarios-delete-dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -48,6 +54,12 @@ import { MiPerfilComponent } from './components/perfil/mi-perfil/mi-perfil.compo
     LlamadosEstadosPosiblesDialogComponent,
     LlamadosEstadosPosiblesDeleteDialogComponent,
     MiPerfilComponent,
+    PersonasComponent,
+    PersonasDialogComponent,
+    PersonasDeleteDialogComponent,
+    UsuariosComponent,
+    UsuariosDialogComponent,
+    UsuariosDeleteDialogComponent,
   ],
   imports: [
     BrowserModule,
