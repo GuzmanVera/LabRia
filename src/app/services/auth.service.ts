@@ -55,5 +55,8 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
-  
+  restorePassword(email: string, token: string, password: string, confirmPassword: string) {
+    const data = { email, token, password, confirmPassword };
+    return this.http.post('http://localhost:5000/api/Auth/ResetPassword', data);
+  }
 }

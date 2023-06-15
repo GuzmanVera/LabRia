@@ -9,6 +9,7 @@ import { NavigationComponent } from './navigation/navigation.component';
 import { MiPerfilComponent } from './components/perfil/mi-perfil/mi-perfil.component';
 import { PersonasComponent } from './components/personas/personas.component';
 import { UsuariosComponent } from './components/usuarios/usuarios.component';
+import { RestorePasswordComponent } from './components/restore-password/restore-password.component';
 
 const routes: Routes = [
   {
@@ -46,7 +47,10 @@ const routes: Routes = [
   {
     path:'usuarios',
     component: UsuariosComponent
-  }
+  },
+  { path: 'restore-password', 
+    component: RestorePasswordComponent 
+  },
 
 ];
 

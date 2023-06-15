@@ -14,6 +14,8 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 
 
@@ -37,7 +39,10 @@ import { MatMenuModule } from '@angular/material/menu';
     MatSortModule,
     MatDialogModule,
     MatSortModule,
-    MatMenuModule
+    MatMenuModule,
+    MatSelectModule,
+    MatSlideToggleModule
+    
     
   ]
 })

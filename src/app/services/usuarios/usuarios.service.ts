@@ -22,6 +22,12 @@ export class UsuariosService {
   
     return this.http.post<any>(`${this.apiURL}/Users`, body);
   }
+
+  register(user: any): Observable<any> {
+    console.log("register");
+    return this.http.post(`${this.apiURL}/Register`, user);
+  }
+
   
 
   get(id: number): Observable<Usuarios> {

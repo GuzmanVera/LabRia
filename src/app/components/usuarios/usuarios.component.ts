@@ -12,7 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./usuarios.component.scss']
 })
 export class UsuariosComponent {
-  displayedColumns: string[] = ['id', 'nombre', 'activo', 'actions'];
+  displayedColumns: string[] = ['imagen', 'id', 'nombre', 'activo', 'actions'];
   dataSource: Usuarios[] = [];  // inicializa el dataSource aquí
   totalCount: number = 0;
   pageEvent: PageEvent = {pageIndex: 0, pageSize: 10, length: 0};
@@ -75,7 +75,7 @@ getUsuarios(): void {
 }
   openCreateDialog(): void {
     const dialogRef = this.dialog.open(UsuariosDialogComponent, {
-      width: '250px',
+      width: '400px',
       data: {
         nombre: '',
         activo: false,
