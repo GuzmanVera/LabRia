@@ -33,8 +33,8 @@ import { PersonasDialogComponent } from './components/personas/personas-dialog/p
 import { PersonasDeleteDialogComponent } from './components/personas/personas-delete-dialog/personas-delete-dialog.component';
 import { UsuariosComponent } from './components/usuarios/usuarios.component';
 import { UsuariosDialogComponent } from './components/usuarios/usuarios-dialog/usuarios-dialog.component';
-import { UsuariosDeleteDialogComponent } from './components/usuarios/usuarios-delete-dialog/usuarios-delete-dialog.component';
 import { RestorePasswordComponent } from './components/restore-password/restore-password.component';
+import { UsuariosRoleDialogComponent } from './components/usuarios/usuarios-role-dialog/usuarios-role-dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -60,8 +60,8 @@ import { RestorePasswordComponent } from './components/restore-password/restore-
     PersonasDeleteDialogComponent,
     UsuariosComponent,
     UsuariosDialogComponent,
-    UsuariosDeleteDialogComponent,
     RestorePasswordComponent,
+    UsuariosRoleDialogComponent,
   ],
   imports: [
     BrowserModule,

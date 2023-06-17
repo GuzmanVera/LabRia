@@ -1,70 +1,99 @@
 <mat-dialog-content>
-  <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
-    <mat-form-field>
-      <mat-label>Tipo de Documento</mat-label>
-      <mat-select formControlName="tipoDocumentoId">
-        <mat-option *ngFor="let docType of docTypes" [value]="docType.id">
-          {{docType.nombre}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+  <!-- Agregar una clase de estilos al formulario para poder aplicar estilos personalizados. -->
+  <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="custom-form">
+    <!-- Crear una sección para los campos de nombre y apellido -->
+    <div class="form-section">
+      <h2>Datos Personales</h2>
+      <div class="form-row">
+        <mat-form-field class="form-field">
+          <mat-label>Tipo de Documento</mat-label>
+          <mat-select formControlName="tipoDocumentoId">
+            <mat-option *ngFor="let docType of docTypes" [value]="docType.id">
+              {{ docType.nombre }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Documento</mat-label>
-      <input matInput formControlName="documento">
-    </mat-form-field>
+        <mat-form-field class="form-field">
+          <mat-label>Documento</mat-label>
+          <input matInput formControlName="documento" />
+        </mat-form-field>
+      </div>
 
-    <mat-form-field>
-      <mat-label>Primer Nombre</mat-label>
-      <input matInput formControlName="primerNombre">
-    </mat-form-field>
+      <div class="form-row">
+        <mat-form-field class="form-field">
+          <mat-label>Primer Nombre</mat-label>
+          <input matInput formControlName="primerNombre" />
+        </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Segundo Nombre</mat-label>
-      <input matInput formControlName="segundoNombre">
-    </mat-form-field>
+        <mat-form-field class="form-field">
+          <mat-label>Segundo Nombre</mat-label>
+          <input matInput formControlName="segundoNombre" />
+        </mat-form-field>
+      </div>
 
-    <mat-form-field>
-      <mat-label>Primer Apellido</mat-label>
-      <input matInput formControlName="primerApellido">
-    </mat-form-field>
+      <div class="form-row">
+        <mat-form-field class="form-field">
+          <mat-label>Primer Apellido</mat-label>
+          <input matInput formControlName="primerApellido" />
+        </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Segundo Apellido</mat-label>
-      <input matInput formControlName="segundoApellido">
-    </mat-form-field>
+        <mat-form-field class="form-field">
+          <mat-label>Segundo Apellido</mat-label>
+          <input matInput formControlName="segundoApellido" />
+        </mat-form-field>
+      </div>
+    </div>
 
-    <!-- email-->
-    <mat-form-field>
-      <mat-label>Email</mat-label>
-      <input matInput formControlName="email">
-    </mat-form-field>
+    <!-- Crear una sección para el correo electrónico -->
+    <div class="form-section">
+      <h2>Contacto</h2>
+      <div class="form-row">
+        <mat-form-field class="form-field">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" />
+        </mat-form-field>
+      </div>
 
-    <mat-list>
-      <mat-list-item>
-        <mat-slide-toggle formControlName="activo">Activo</mat-slide-toggle>
-      </mat-list-item>
-    
+      <div class="form-row">
+        <mat-list-item>
+          <mat-slide-toggle formControlName="activo">Activo</mat-slide-toggle>
+        </mat-list-item>
+      </div>
+    </div>
 
-<mat-list-item>
+    <!-- Crear una sección para la carga de imágenes -->
+    <div class="form-section">
+      <h2>Imagen</h2>
+      <div class="form-row">
+        <!-- Ocultamos el input real con el estilo display: none -->
+        <input
+          type="file"
+          #fileInput
+          (change)="handleFileInput($event)"
+          id="fileInput"
+        />
+
+        <!-- Usamos un botón Angular Material para activar la selección de archivos
+        <button mat-raised-button (click)="fileInput.click()">
+          Seleccionar archivo
+        </button> -->
         
-    <mat-label>Imagen</mat-label>
-  </mat-list-item>
-  <mat-list-item>
-    <input type="file" #fileInput (change)="handleFileInput($event)" placeholder="Imagen">
+      </div>
 
+      <div class="form-row">
+        <!-- Mostramos la imagen seleccionada -->
+        <img
+          *ngIf="previewUrl"
+          [src]="previewUrl"
+          alt="Image preview"
+          class="preview-image"
+        />
+      </div>
+    </div>
 
-
-      </mat-list-item>
-
-
-  </mat-list>
-
-
-
-
-
-
-    <button mat-button type="submit">Enviar</button>
+    <div class="form-section">
+      <button mat-raised-button color="primary" type="submit">Enviar</button>
+    </div>
   </form>
 </mat-dialog-content>

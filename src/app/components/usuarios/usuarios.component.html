@@ -1,13 +1,21 @@
 <app-navigation>
     <button mat-raised-button color="primary" (click)="openCreateDialog()">Crear Usuario</button>
    
-     <div class="mat-elevation-z8">
-       <div class="filter">
-         <mat-form-field class="filter-input">
-           <mat-label>Filtro</mat-label>
-           <input matInput (keyup)="applyFilter($event)" placeholder="Filtrar por nombre">
-         </mat-form-field>
-       </div>
+    <div class="mat-elevation-z8">
+      <div class="filter">
+        <mat-form-field class="filter-select">
+          <mat-label>Seleccionar Campo</mat-label>
+          <mat-select [(value)]="selectedField">
+            <mat-option *ngFor="let field of fieldsToFilter" [value]="field.value">
+              {{field.viewValue}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="filter-input">
+          <mat-label>Filtro</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="Filtrar por campo seleccionado">
+        </mat-form-field>
+      </div>
        
    
        <table mat-table [dataSource]="dataSource">
@@ -20,16 +28,21 @@
         </ng-container>
         
 
-         <ng-container matColumnDef="id">
-           <th mat-header-cell *matHeaderCellDef (click)="sortData('id')"> ID </th>
-           <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+         <ng-container matColumnDef="documento">
+           <th mat-header-cell *matHeaderCellDef (click)="sortData('documento')"> CI </th>
+           <td mat-cell *matCellDef="let element"> {{element.persona.documento}} </td>
+         </ng-container>
+       
+         <ng-container matColumnDef="email">
+           <th mat-header-cell *matHeaderCellDef (click)="sortData('email')"> Email </th>
+           <td mat-cell *matCellDef="let element"> {{element.email}} </td>
          </ng-container>
        
          <ng-container matColumnDef="nombre">
-           <th mat-header-cell *matHeaderCellDef (click)="sortData('nombre')"> Nombre </th>
-           <td mat-cell *matCellDef="let element"> {{element.username}} </td>
-         </ng-container>
-       
+          <th mat-header-cell *matHeaderCellDef (click)="sortData('nombre')"> Nombre </th>
+          <td mat-cell *matCellDef="let element"> {{element.persona.primerNombre}} {{element.persona.primerApellido}} </td>
+        </ng-container>
+
          <ng-container matColumnDef="activo">
            <th mat-header-cell *matHeaderCellDef (click)="sortData('activo')"> Activo </th>
            <td mat-cell *matCellDef="let element"> {{element.persona.activo ? 'Sí' : 'No'}} </td>
@@ -43,7 +56,7 @@
                <!-- El botón de editar llama a "openEditDialog" con el elemento actual como argumento -->
                <button mat-button color="primary" (click)="openEditDialog(element)">Editar</button>
                <!-- El botón de eliminar llama a "openDeleteDialog" con el elemento actual como argumento -->
-               <button mat-button color="warn"  (click)="openDeleteDialog(element)">Eliminar</button>
+               <button mat-button color="warn"  (click)="openRoleDialog(element)">Roles</button>
              </td>
            </ng-container>
    

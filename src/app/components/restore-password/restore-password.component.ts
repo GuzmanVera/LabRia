@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
-
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-restore-password',
@@ -17,7 +18,9 @@ export class RestorePasswordComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private snackBar: MatSnackBar,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -38,11 +41,12 @@ export class RestorePasswordComponent implements OnInit {
   
       this.authService.restorePassword(this.email, this.token, password, confirmPassword)
         .subscribe(
-          () => alert('Contraseña restablecida con éxito'),
-          error => alert('Error al restablecer la contraseña: ' + error.message)
+          () => {
+            this.snackBar.open('Contraseña restablecida con éxito', 'Cerrar', { duration: 3000 });
+            this.router.navigate(['/']);
+          },
+          error => this.snackBar.open('Error al restablecer la contraseña: ' + error.message, 'Cerrar', { duration: 3000 })
         );
     }
-}
-
-
+  }
 }

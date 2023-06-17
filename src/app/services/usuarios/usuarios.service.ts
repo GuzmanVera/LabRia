@@ -11,12 +11,12 @@ export class UsuariosService {
 
   constructor(private http: HttpClient) { }
 
-  getAll(offset: number, limit: number, filterValue?: string, sort?: string): Observable<any> {
+  getAll(offset: number, limit: number, filterValue?: string, sort?: string, field?: string): Observable<any> {
     const body = {
       limit: limit,
       offset: offset,
       id: 0,
-      filters: { activo: null, nombre: filterValue || "" },
+      filters: { [field || '']: filterValue || "" },
       orders: sort ? [sort] : [""]
     };
   
@@ -24,7 +24,6 @@ export class UsuariosService {
   }
 
   register(user: any): Observable<any> {
-    console.log("register");
     return this.http.post(`${this.apiURL}/Register`, user);
   }
 
@@ -47,17 +46,8 @@ export class UsuariosService {
     return this.http.post<Usuarios>(`${this.apiURL}/Register`, requestBody);
   }
   
-  update(id: number, usuarios: Usuarios): Observable<Usuarios> {
-    const requestBody = {
-      id: id,
-      username: usuarios.username,
-      email: usuarios.email,
-      persona: usuarios.persona,
-      activo: usuarios.activo,
-      imagen: usuarios.imagen,
-    };
-  
-    return this.http.put<Usuarios>(`${this.apiURL}/Users`, requestBody);
+  update(user: any): Observable<any> {
+    return this.http.put(`${this.apiURL}/Users`, user);
   }
   
 

@@ -3,8 +3,8 @@ import { PageEvent } from '@angular/material/paginator';
 import { Usuarios } from 'src/app/models/usuarios';
 import { UsuariosService } from 'src/app/services/usuarios/usuarios.service';
 import { UsuariosDialogComponent } from './usuarios-dialog/usuarios-dialog.component';
-import { UsuariosDeleteDialogComponent } from './usuarios-delete-dialog/usuarios-delete-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { UsuariosRoleDialogComponent } from './usuarios-role-dialog/usuarios-role-dialog.component';
 
 @Component({
   selector: 'app-usuarios',
@@ -12,7 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./usuarios.component.scss']
 })
 export class UsuariosComponent {
-  displayedColumns: string[] = ['imagen', 'id', 'nombre', 'activo', 'actions'];
+  displayedColumns: string[] = ['imagen', 'documento', 'email', 'nombre', 'activo', 'actions'];
   dataSource: Usuarios[] = [];  // inicializa el dataSource aquí
   totalCount: number = 0;
   pageEvent: PageEvent = {pageIndex: 0, pageSize: 10, length: 0};
@@ -20,10 +20,19 @@ export class UsuariosComponent {
   sortField: string = ''; // Campo de ordenación
 
 
+  selectedField: string = 'nombre';  // Campo inicial para el filtro.
+  fieldsToFilter = [
+    //{value: 'nombre', viewValue: 'Nombre'},
+    {value: 'email', viewValue: 'Email'},
+    {value: 'documento', viewValue: 'Documento'},
+    //{value: 'activo', viewValue: 'Activo'}
+    
+  ];
+
   onPaginateChange(event: PageEvent) {
     this.pageEvent = event;
     
-    this.getUsuarios();
+    this.getUsuarios(this.selectedField);
   }
   
   sortData(field: string) {
@@ -37,33 +46,32 @@ export class UsuariosComponent {
     }
   
     // Actualizamos la consulta a la API con el nuevo ordenamiento
-    this.getUsuarios();
+    this.getUsuarios(this.selectedField);
   }
   
 
   constructor(private usuariosService: UsuariosService, public dialog: MatDialog) {}
 
   ngOnInit(): void {
-    this.getUsuarios();
+    this.getUsuarios(this.selectedField);
   }
 
   filterValue!: string;
 
- applyFilter(event: Event) {
-  const filterValue = (event.target as HTMLInputElement).value;
-  this.filterValue = filterValue;
-  this.getUsuarios();
-}
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.filterValue = filterValue;
+    this.getUsuarios(this.selectedField);
+  }
 
 
 
-getUsuarios(): void {
+getUsuarios(field: string): void {
   const pageIndex = this.pageEvent ? this.pageEvent.pageIndex : 0;
   const pageSize = this.pageEvent ? this.pageEvent.pageSize : 10;
   const offset = pageIndex * pageSize;
   const sort = this.sortField ? `${this.sortField} ${this.sortDirection}` : '';
-  
-  this.usuariosService.getAll(offset, pageSize, this.filterValue, sort).subscribe(
+    this.usuariosService.getAll(offset, pageSize, this.filterValue, sort, field).subscribe(
     response => {
       this.dataSource = response.list;
       this.totalCount = response.totalCount;
@@ -75,7 +83,7 @@ getUsuarios(): void {
 }
   openCreateDialog(): void {
     const dialogRef = this.dialog.open(UsuariosDialogComponent, {
-      width: '400px',
+      width: '500px',
       data: {
         nombre: '',
         activo: false,
@@ -90,7 +98,7 @@ getUsuarios(): void {
           next: (data) => {
             // Añadir el nuevo tipo de documento a la tabla.
             this.dataSource.push(data);
-            this.getUsuarios()
+            this.getUsuarios(this.selectedField)
           },
           error: (error) => {
             // Manejo de errores
@@ -99,38 +107,24 @@ getUsuarios(): void {
       });
       }
     });
-    this.getUsuarios()
+    this.getUsuarios(this.selectedField)
   }
   
   openEditDialog(usuarios: Usuarios): void {
     const dialogRef = this.dialog.open(UsuariosDialogComponent, {
-      width: '250px',
+      width: '500px',
       data: {...usuarios} // Hacemos una copia del objeto para no modificar el original.
     });
   
     dialogRef.afterClosed().subscribe(result => {
-      // "result" contiene los datos devueltos por el diálogo. En este caso, el tipo de documento a editar.
-      if (result) {
-        this.usuariosService.update(result.id, result).subscribe(
-          data => {
-            // Actualizar el tipo de documento en la tabla.
-            const index = this.dataSource.findIndex(td => td.id === data.id);
-            if (index !== -1) {
-              this.dataSource[index] = data;
-              this.getUsuarios()
-            }
-          },
-          error => {
-            // Manejo de errores
-            console.log('Hubo un error al actualizar el tipo de documento:', error);
-          }
-        );
-      }
+      //refresh the page
+      this.getUsuarios(this.selectedField);
+        
     });
   }
 
-  openDeleteDialog(usuarios: Usuarios): void {
-    const dialogRef = this.dialog.open(UsuariosDeleteDialogComponent, {
+  openRoleDialog(usuarios: Usuarios): void { //tiene la logia del eliminar, hay que cambiarla uwu
+    const dialogRef = this.dialog.open(UsuariosRoleDialogComponent, {
       width: '250px',
       data: {...usuarios} // Hacemos una copia del objeto para no modificar el original.
     });
@@ -148,7 +142,7 @@ getUsuarios(): void {
               this.dataSource.splice(index, 1);
               
             }
-            this.getUsuarios()
+            this.getUsuarios(this.selectedField)
           },
           error => {
             // Manejo de errores
