@@ -1,9 +1,15 @@
 .sidenav-container {
   height: 100%;
+
+}
+
+.sidenav-content{
+  width: 80%;
+  background-color: black;
 }
 
 .sidenav {
-  width: 200px;
+  width: 300px;
 }
 
 .sidenav .mat-toolbar {
@@ -15,3 +21,46 @@
   top: 0;
   z-index: 1;
 }
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+}
+
+.toolbar-spacer {
+  flex: 1 1 auto;
+}
+
+
+.logo {
+  height: 50px;
+  width: 50px;
+}
+
+.long-title {
+  margin-left: 10px;
+}
+
+.short-title {
+  display: none;
+  margin-left: 10px;
+}
+
+@media (max-width: 600px) {
+  .logo {
+    height: 30px;
+    width: 30px;
+  }
+
+  .long-title {
+    display: none;
+  }
+
+  .short-title {
+    display: block;
+  }
+}
+
+
+
+

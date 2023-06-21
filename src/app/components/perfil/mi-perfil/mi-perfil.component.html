@@ -1,19 +1,54 @@
 <app-navigation>
-<mat-card>
-    <mat-card-header>
-      <mat-card-title>Mi perfil</mat-card-title>
+  <mat-card class="profile-card">
+    <mat-card-header class="profile-header">
+      <div>
+        <mat-card-title>Mi perfil</mat-card-title>
+      </div>
+      <span class="header-spacer"></span>
+      <div class="profile-image">
+        <img [src]="imagen" alt="Imagen de perfil del usuario" class="avatar">
+      </div>
+      
     </mat-card-header>
-    <mat-card-content>
-      <p>Nombre de usuario: {{username}}</p>
-      <p>Documento: {{documento}}</p>
-      <p>Tipo de documento: {{tipoDocumento}}</p>
-      <p>Email: {{email}}</p>
-      <p>Roles: {{roles}}</p>
-      <p>Expiración del token: {{expiration}}</p>
+    <mat-card-content class="profile-content">
+      <div class="profile-field">
+        <span class="profile-label">Nombre de usuario:</span>
+        <span class="profile-value">{{username}}</span>
+      </div>
+      <!-- Repite este patrón para los otros campos -->
+      <div class="profile-field">
+        <span class="profile-label">Documento:</span>
+        <span class="profile-value">{{documento}}</span>
+      </div>
+      
+      <div class="profile-field">
+        <span class="profile-label">Tipo de documento:</span>
+        <span class="profile-value">{{tipoDocumento}}</span>
+      </div>
+
+      <div class="profile-field">
+        <span class="profile-label">Email:</span>
+        <span class="profile-value">{{email}}</span>
+      </div>
+
+      <div class="profile-field">
+        <span class="profile-label">Roles:</span>
+        <span class="profile-value">{{roles}}</span>
+      </div>
+
+      <div class="profile-field">
+        <span class="profile-label">Expiración del token:</span>
+        <span class="profile-value">{{expiration}}</span>
+      </div>
+
     </mat-card-content>
-    <mat-card-actions>
-      <button mat-button>Editar</button>
-      <button mat-button>Reset Password</button>
+    <mat-card-actions class="profile-actions">
+      <button class="action-button" mat-raised-button color="primary">
+        <mat-icon>edit</mat-icon> Editar
+      </button>
+      <button class="action-button"  mat-raised-button color="primary">
+        <mat-icon>settings</mat-icon> Resetear contraseña
+      </button>
     </mat-card-actions>
   </mat-card>
 </app-navigation>

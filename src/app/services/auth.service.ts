@@ -20,7 +20,7 @@ export class AuthService {
           localStorage.setItem('username', res.nombre);
           localStorage.setItem('expiration', res.expiration);
           localStorage.setItem('documento', res.documento);
-          localStorage.setItem('tipoDocumento', res.tipoDocumento);
+          localStorage.setItem('tipoDocumento', res.tipoDocumento.nombre);
           localStorage.setItem('imagen', res.imagen);
           localStorage.setItem('email', res.email);
           localStorage.setItem('roles', JSON.stringify(res.roles)); // Los roles son un array, por lo que los convertimos a un string JSON
