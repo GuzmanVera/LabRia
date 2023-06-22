@@ -11,6 +11,7 @@ import { PersonasComponent } from './components/personas/personas.component';
 import { UsuariosComponent } from './components/usuarios/usuarios.component';
 import { RestorePasswordComponent } from './components/restore-password/restore-password.component';
 import { RolesComponent } from './components/roles/roles.component';
+import { LlamadosComponent } from './components/llamados/llamados.component';
 
 const routes: Routes = [
   {
@@ -54,6 +55,9 @@ const routes: Routes = [
   },
   { path: 'roles', 
     component: RolesComponent 
+  },
+  { path: 'llamados', 
+    component: LlamadosComponent 
   },
 
 ];

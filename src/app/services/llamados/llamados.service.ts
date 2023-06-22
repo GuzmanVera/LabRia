@@ -1,0 +1,61 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Llamados } from 'src/app/models/llamados';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class LlamadosService {
+  private apiURL = 'http://localhost:5000/api/Llamados';
+
+  constructor(private http: HttpClient) { }
+
+  getAll(offset: number, limit: number, filterValue?: string, sort?: string): Observable<any> {
+    const body = {
+      limit: limit,
+      offset: offset,
+      id: 0,
+      filters: { activo: null, nombre: filterValue || "" },
+      orders: sort ? [sort] : [""]
+    };
+  
+    return this.http.post<any>(`${this.apiURL}/Paged`, body);
+  }
+  
+
+  get(id: number): Observable<Llamados> {
+    return this.http.get<Llamados>(`${this.apiURL}/${id}`);
+  }
+
+  create(llamados: Llamados): Observable<Llamados> {
+    const requestBody = {
+      id: 0,
+      activo: llamados.activo,
+      identificador: llamados.identificador,
+      nombre: llamados.nombre,
+      linkPlanillaPuntajes: llamados.linkPlanillaPuntajes,
+      linkActa: llamados.linkActa,
+      minutosEntrevista: llamados.minutosEntrevista,
+      areaId: llamados.idArea,
+      area: null
+    };
+    console.log('llamadosService:',requestBody);
+    return this.http.post<Llamados>(this.apiURL, requestBody);
+  }
+  
+  update(id: number, llamados: Llamados): Observable<Llamados> {
+    const requestBody = {
+      id: id,
+      activo: llamados.activo,
+      nombre: llamados.nombre,
+    };
+  
+    return this.http.put<Llamados>(`${this.apiURL}/${id}`, requestBody);
+  }
+  
+
+  delete(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiURL}/${id}`);
+  }
+}

@@ -36,6 +36,9 @@ import { UsuariosDialogComponent } from './components/usuarios/usuarios-dialog/u
 import { RestorePasswordComponent } from './components/restore-password/restore-password.component';
 import { UsuariosRoleDialogComponent } from './components/usuarios/usuarios-role-dialog/usuarios-role-dialog.component';
 import { RolesComponent } from './components/roles/roles.component';
+import { LlamadosComponent } from './components/llamados/llamados.component';
+import { LlamadosDialogComponent } from './components/llamados/llamados-dialog/llamados-dialog.component';
+import { LlamadosDeleteDialogComponent } from './components/llamados/llamados-delete-dialog/llamados-delete-dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -64,6 +67,9 @@ import { RolesComponent } from './components/roles/roles.component';
     RestorePasswordComponent,
     UsuariosRoleDialogComponent,
     RolesComponent,
+    LlamadosComponent,
+    LlamadosDialogComponent,
+    LlamadosDeleteDialogComponent,
   ],
   imports: [
     BrowserModule,
