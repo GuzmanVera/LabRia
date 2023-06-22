@@ -1,1 +1,10 @@
-<p>usuarios-role-dialog works!</p>
+<h1 mat-dialog-title>Administrar roles</h1>
+<div mat-dialog-content>
+  <mat-checkbox *ngFor="let role of roles" [(ngModel)]="role.selected">
+    {{role.name}}
+  </mat-checkbox>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="cancel()">Cancelar</button>
+  <button mat-button (click)="apply()">Aplicar</button>
+</div>

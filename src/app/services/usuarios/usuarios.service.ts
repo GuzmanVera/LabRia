@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Usuarios } from 'src/app/models/usuarios';
@@ -55,11 +55,30 @@ export class UsuariosService {
     return this.http.delete<any>(`${this.apiURL}/${id}`);
   }
 
-  addRole(id: number, rol: string): Observable<any>{
+  getUserRoles(username: string): Observable<any>{
     const requestBody = {
-      userId: id,
-      roleId: rol,
+      limit: 1,
+      id: 0,
+      filters: { username:username},
     };
-    return this.http.post(`${this.apiURL}/UserRoles`, requestBody);
+    return this.http.post<any>(`${this.apiURL}/Users`, requestBody);
   }
+
+  addUserRole(data: {userId: number, roleId: number}): Observable<any> {
+    return this.http.post(`${this.apiURL}/Users/UserRoles`, data);
+  }
+  
+  removeUserRole(userId: string, roleId: string): Observable<any> {
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      body: {
+        userId: userId,
+        roleId: roleId,
+      },
+    };
+    
+    return this.http.delete(`${this.apiURL}/Users/UserRoles`, options);
+}
 }

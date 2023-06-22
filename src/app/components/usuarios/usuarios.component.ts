@@ -123,33 +123,14 @@ getUsuarios(field: string): void {
     });
   }
 
-  openRoleDialog(usuarios: Usuarios): void { //tiene la logia del eliminar, hay que cambiarla uwu
+  openRoleDialog(usuarios: Usuarios): void {
     const dialogRef = this.dialog.open(UsuariosRoleDialogComponent, {
       width: '250px',
-      data: {...usuarios} // Hacemos una copia del objeto para no modificar el original.
+      data: {...usuarios}
     });
   
     dialogRef.afterClosed().subscribe(result => {
-      
-      // "result" contiene los datos devueltos por el diálogo. En este caso, el tipo de documento a eliminar.
-      if (result) {
-        
-        this.usuariosService.delete(result).subscribe(
-          data => {
-            // Eliminar el tipo de documento de la tabla.
-            const index = this.dataSource.findIndex(td => td.id === data.id);
-            if (index !== -1) {
-              this.dataSource.splice(index, 1);
-              
-            }
-            this.getUsuarios(this.selectedField)
-          },
-          error => {
-            // Manejo de errores
-            console.log('Hubo un error al eliminar el tipo de documento:', error);
-          }
-        );
-      }
+      this.getUsuarios(this.selectedField);
     });
   }
 }
