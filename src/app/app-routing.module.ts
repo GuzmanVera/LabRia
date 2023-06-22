@@ -10,6 +10,7 @@ import { MiPerfilComponent } from './components/perfil/mi-perfil/mi-perfil.compo
 import { PersonasComponent } from './components/personas/personas.component';
 import { UsuariosComponent } from './components/usuarios/usuarios.component';
 import { RestorePasswordComponent } from './components/restore-password/restore-password.component';
+import { RolesComponent } from './components/roles/roles.component';
 
 const routes: Routes = [
   {
@@ -50,6 +51,9 @@ const routes: Routes = [
   },
   { path: 'restore-password', 
     component: RestorePasswordComponent 
+  },
+  { path: 'roles', 
+    component: RolesComponent 
   },
 
 ];

@@ -54,4 +54,12 @@ export class UsuariosService {
   delete(id: number): Observable<any> {
     return this.http.delete<any>(`${this.apiURL}/${id}`);
   }
+
+  addRole(id: number, rol: string): Observable<any>{
+    const requestBody = {
+      userId: id,
+      roleId: rol,
+    };
+    return this.http.post(`${this.apiURL}/UserRoles`, requestBody);
+  }
 }
