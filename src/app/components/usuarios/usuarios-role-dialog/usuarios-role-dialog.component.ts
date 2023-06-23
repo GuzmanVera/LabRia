@@ -5,6 +5,7 @@ import { RolesService } from 'src/app/services/roles/roles.service';
 import { Usuarios } from 'src/app/models/usuarios';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-usuarios-role-dialog',
@@ -19,19 +20,24 @@ export class UsuariosRoleDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<UsuariosRoleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Usuarios,
     private usuariosService: UsuariosService,
-    private rolesService: RolesService
+    private rolesService: RolesService,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
     this.rolesService.getAll().pipe(
       catchError(error => {
-        console.error(error);
+        this.snackBar.open('Error al obtener roles: ' + error.message, 'Cerrar', {
+          duration: 5000,
+        });
         return of([]);
       })
     ).subscribe(allRoles => {
       this.usuariosService.getUserRoles(this.data.username).pipe(
         catchError(error => {
-          console.error(error);
+          this.snackBar.open('Error al obtener roles de usuario: ' + error.message, 'Cerrar', {
+            duration: 5000,
+          });
           return of({list: [{roles: []}]});
         })
       ).subscribe(userRolesRes => {
@@ -54,9 +60,6 @@ export class UsuariosRoleDialogComponent implements OnInit {
     const addedRoles = selectedRoles.filter(role => !this.userRoles.some(userRole => userRole === role.id));
     const removedRoles = this.userRoles.filter(userRole => !selectedRoles.some(role => role.id === userRole));
   
-    console.log(addedRoles);
-    console.log(removedRoles);
-  
     try {
       for (const role of addedRoles) {
         await this.usuariosService.addUserRole({userId: this.data.id, roleId: role.name}).toPromise();
@@ -67,8 +70,17 @@ export class UsuariosRoleDialogComponent implements OnInit {
       }
   
       this.dialogRef.close();
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      if (error instanceof Error) {
+        this.snackBar.open('Error al aplicar roles: ' + error.message, 'Cerrar', {
+          duration: 5000,
+        });
+      } else {
+        this.snackBar.open('Error al aplicar roles', 'Cerrar', {
+          duration: 5000,
+        });
+      }
     }
   }
+  
 }

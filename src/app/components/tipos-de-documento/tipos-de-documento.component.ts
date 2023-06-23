@@ -6,6 +6,8 @@ import { Observable } from 'rxjs';
 import { TipoDeDocumentoDialogComponent } from './tipo-de-documento-dialog/tipo-de-documento-dialog.component';
 import { TipoDeDocumentoDeleteDialogComponent } from './tipo-de-documento-delete-dialog/tipo-de-documento-delete-dialog.component';
 import { PageEvent } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 @Component({
   selector: 'app-tipos-de-documento',
   templateUrl: './tipos-de-documento.component.html',
@@ -41,7 +43,7 @@ export class TiposDeDocumentoComponent implements OnInit {
   }
   
 
-  constructor(private tiposDeDocumentoService: TiposDeDocumentoService, public dialog: MatDialog) {}
+  constructor(private tiposDeDocumentoService: TiposDeDocumentoService, public dialog: MatDialog, private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.getTiposDeDocumento();
@@ -69,7 +71,7 @@ getTiposDeDocumento(): void {
       this.totalCount = response.totalCount;
     },
     error => {
-      console.log('Hubo un error al recuperar los tipos de documento:', error);
+      this.snackBar.open('Hubo un error al recuperar los tipos de documento', 'Cerrar', { duration: 5000 });
     }
   );
 }
@@ -88,13 +90,14 @@ getTiposDeDocumento(): void {
         console.log(result);
         this.tiposDeDocumentoService.create(result).subscribe({
           next: (data) => {
+            this.snackBar.open('Tipo de documento creado con éxito', 'Cerrar', { duration: 5000 });
             // Añadir el nuevo tipo de documento a la tabla.
             this.dataSource.push(data);
             this.getTiposDeDocumento()
           },
           error: (error) => {
             // Manejo de errores
-            console.log('Hubo un error al crear el tipo de documento:', error);
+            this.snackBar.open('Hubo un error al crear el tipo de documento', 'Cerrar', { duration: 5000 });
           }
       });
       }
@@ -116,13 +119,14 @@ getTiposDeDocumento(): void {
             // Actualizar el tipo de documento en la tabla.
             const index = this.dataSource.findIndex(td => td.id === data.id);
             if (index !== -1) {
+              this.snackBar.open('Tipo de documento actualizado con éxito', 'Cerrar', { duration: 5000 });
               this.dataSource[index] = data;
               this.getTiposDeDocumento()
             }
           },
           error => {
             // Manejo de errores
-            console.log('Hubo un error al actualizar el tipo de documento:', error);
+            this.snackBar.open('Hubo un error al actualizar el tipo de documento', 'Cerrar', { duration: 5000 });
           }
         );
       }
@@ -145,6 +149,8 @@ getTiposDeDocumento(): void {
             // Eliminar el tipo de documento de la tabla.
             const index = this.dataSource.findIndex(td => td.id === data.id);
             if (index !== -1) {
+              this.snackBar.open('Tipo de documento eliminado con éxito', 'Cerrar', { duration: 5000 });
+
               this.dataSource.splice(index, 1);
               
             }
@@ -152,7 +158,7 @@ getTiposDeDocumento(): void {
           },
           error => {
             // Manejo de errores
-            console.log('Hubo un error al eliminar el tipo de documento:', error);
+            this.snackBar.open('Error inesperado al intentar eliminar el registro', 'Cerrar', { duration: 5000 });
           }
         );
       }

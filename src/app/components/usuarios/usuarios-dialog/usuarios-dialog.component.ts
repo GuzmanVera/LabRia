@@ -45,19 +45,23 @@ export class UsuariosDialogComponent implements OnInit {
       this.userForm.controls['tipoDocumentoId'].disable();
       this.userForm.controls['documento'].disable();
       this.userForm.controls['email'].disable();
-
+      console.log(this.data);
       // Carga los datos del usuario
       this.userForm.patchValue({
         'id': this.data.id,	
-        'tipoDocumentoId': this.data.persona.tipoDeDocumento,
+        'tipoDocumentoId': this.data.persona.tipoDeDocumento.id,
         'documento': this.data.persona.documento,
         'primerNombre': this.data.persona.primerNombre,
         'segundoNombre': this.data.persona.segundoNombre,
         'primerApellido': this.data.persona.primerApellido,
         'segundoApellido': this.data.persona.segundoApellido,
         'email': this.data.email,
-        'activo': this.data.activo
+        'activo': this.data.activo,
+        'imagen': this.data.imagen,
       });
+      
+
+      console.log(this.userForm);
 
       if (this.data.imagen) {
         // Assign the image URL to the previewUrl property
@@ -69,16 +73,19 @@ export class UsuariosDialogComponent implements OnInit {
     this.tiposDeDocumentoService.getAll(0, -1).subscribe(
       response => {
         this.docTypes = response.list;
-        // Busca el tipo de documento con nombre 'CI'
-      const defaultDocType = this.docTypes.find(docType => docType.nombre === 'CI');
-      
-      if (defaultDocType) {
-        // Si se encuentra, establece el valor del control de formulario 'tipoDocumentoId'
-        this.userForm.controls['tipoDocumentoId'].setValue(defaultDocType.id);
-      }
+        // Si no estamos en modo de edición, establece el tipo de documento por defecto a 'CI'
+        if (!(this.data && this.data.id)) {
+          const defaultDocType = this.docTypes.find(docType => docType.nombre === 'CI');
+          if (defaultDocType) {
+            // Si se encuentra, establece el valor del control de formulario 'tipoDocumentoId'
+            this.userForm.controls['tipoDocumentoId'].setValue(defaultDocType.id);
+          }
+        }
       },
       error => {
-        console.log('Hubo un error al recuperar los tipos de documento:', error);
+        this.snackBar.open('Hubo un error al recuperar los tipos de documento: ' + error.error.mensaje, 'Cerrar', {
+          duration: 5000,
+        });
       }
     );
   }
@@ -121,6 +128,7 @@ export class UsuariosDialogComponent implements OnInit {
   
   // Aquí está la función de actualización
   updateUser(id: number, user: any) {
+    console.log('Actualizando usuario:', user);
     
     this.usuariosService.update(user).subscribe(
       response => {
@@ -151,16 +159,17 @@ export class UsuariosDialogComponent implements OnInit {
             duration: 5000,
           });
         }
+        // Close dialog here as well
+        this.dialogRef.close();
       },
       error => {
-         
         this.snackBar.open('Hubo un error en el registro: ' + error.error.mensaje, 'Cerrar', {
           duration: 5000,
         });
       }
     );
   }
-  
+
 
   onFileSelect(event: Event) {
     const target = event.target as HTMLInputElement;

@@ -5,6 +5,8 @@ import { LlamadosEstadosPosiblesService } from 'src/app/services/llamados-estado
 import { LlamadosEstadosPosiblesDialogComponent } from './llamados-estados-posibles-dialog/llamados-estados-posibles-dialog.component';
 import { TipoDeDocumentoDeleteDialogComponent } from '../tipos-de-documento/tipo-de-documento-delete-dialog/tipo-de-documento-delete-dialog.component';
 import { PageEvent } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'app-llamados-estados-posibles',
@@ -39,7 +41,7 @@ export class LlamadosEstadosPosiblesComponent {
     this.getLlamadosEstadosPosibles();
   }
 
-  constructor(private llamadosEstadosPosiblesService: LlamadosEstadosPosiblesService, public dialog: MatDialog) {}
+  constructor(private llamadosEstadosPosiblesService: LlamadosEstadosPosiblesService, public dialog: MatDialog,  private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.getLlamadosEstadosPosibles();
@@ -65,7 +67,7 @@ export class LlamadosEstadosPosiblesComponent {
         this.totalCount = response.totalCount;
       },
       error => {
-        console.log('Hubo un error al recuperar los tipos de documento:', error);
+        this.snackBar.open('Hubo un error al obtener los estados posibles', 'Cerrar', { duration: 5000 });
       }
     );
   }
@@ -83,11 +85,12 @@ export class LlamadosEstadosPosiblesComponent {
       if (result) {
         this.llamadosEstadosPosiblesService.create(result).subscribe({
           next: (data) => {
+            this.snackBar.open('Registro añadido con éxito', 'Cerrar', { duration: 5000 });
             this.dataSource.push(data);
             this.getLlamadosEstadosPosibles()
           },
           error: (error) => {
-            console.log('Hubo un error al crear el tipo de documento:', error);
+            this.snackBar.open('Hubo un error al crear el registro', 'Cerrar', { duration: 5000 });
           }
         });
       }
@@ -109,13 +112,15 @@ export class LlamadosEstadosPosiblesComponent {
             // Actualizar el tipo de documento en la tabla.
             const index = this.dataSource.findIndex(td => td.id === data.id);
             if (index !== -1) {
+              this.snackBar.open('Registro actualizada con éxito', 'Cerrar', { duration: 5000 });
               this.dataSource[index] = data;
               this.getLlamadosEstadosPosibles()
             }
           },
           error => {
             // Manejo de errores
-            console.log('Hubo un error al actualizar el tipo de documento:', error);
+            this.snackBar.open('Hubo un error durante la actualización', 'Cerrar', { duration: 5000 });
+
           }
         );
       }
@@ -138,6 +143,7 @@ export class LlamadosEstadosPosiblesComponent {
             // Eliminar el tipo de documento de la tabla.
             const index = this.dataSource.findIndex(td => td.id === data.id);
             if (index !== -1) {
+              this.snackBar.open('Registro eliminado con éxito', 'Cerrar', { duration: 5000 });
               this.dataSource.splice(index, 1);
               
             }
@@ -145,7 +151,7 @@ export class LlamadosEstadosPosiblesComponent {
           },
           error => {
             // Manejo de errores
-            console.log('Hubo un error al eliminar el tipo de documento:', error);
+            this.snackBar.open('Hubo un error al intentar eliminar el registro', 'Cerrar', { duration: 5000 });
           }
         );
       }

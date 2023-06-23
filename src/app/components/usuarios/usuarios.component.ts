@@ -5,6 +5,7 @@ import { UsuariosService } from 'src/app/services/usuarios/usuarios.service';
 import { UsuariosDialogComponent } from './usuarios-dialog/usuarios-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { UsuariosRoleDialogComponent } from './usuarios-role-dialog/usuarios-role-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-usuarios',
@@ -50,7 +51,7 @@ export class UsuariosComponent {
   }
   
 
-  constructor(private usuariosService: UsuariosService, public dialog: MatDialog) {}
+  constructor(private usuariosService: UsuariosService, public dialog: MatDialog, private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.getUsuarios(this.selectedField);
@@ -71,13 +72,13 @@ getUsuarios(field: string): void {
   const pageSize = this.pageEvent ? this.pageEvent.pageSize : 10;
   const offset = pageIndex * pageSize;
   const sort = this.sortField ? `${this.sortField} ${this.sortDirection}` : '';
-    this.usuariosService.getAll(offset, pageSize, this.filterValue, sort, field).subscribe(
+  this.usuariosService.getAll(offset, pageSize, this.filterValue, sort, field).subscribe(
     response => {
       this.dataSource = response.list;
       this.totalCount = response.totalCount;
     },
     error => {
-      console.log('Hubo un error al recuperar los tipos de documento:', error);
+      this.snackBar.open('Hubo un error al recuperar los usuarios', 'Cerrar', { duration: 5000 });
     }
   );
 }
@@ -93,18 +94,16 @@ getUsuarios(field: string): void {
     dialogRef.afterClosed().subscribe(result => {
       // "result" contiene los datos devueltos por el diálogo. En este caso, el tipo de documento a crear.
       if (result) {
-        console.log(result);
         this.usuariosService.create(result).subscribe({
           next: (data) => {
-            // Añadir el nuevo tipo de documento a la tabla.
             this.dataSource.push(data);
-            this.getUsuarios(this.selectedField)
+            this.getUsuarios(this.selectedField);
+            this.snackBar.open('Usuario creado con éxito', 'Cerrar', { duration: 5000 });
           },
           error: (error) => {
-            // Manejo de errores
-            console.log('Hubo un error al crear el tipo de documento:', error);
+            this.snackBar.open('Hubo un error al crear el usuario', 'Cerrar', { duration: 5000 });
           }
-      });
+        });
       }
     });
     this.getUsuarios(this.selectedField)
@@ -117,9 +116,8 @@ getUsuarios(field: string): void {
     });
   
     dialogRef.afterClosed().subscribe(result => {
-      //refresh the page
       this.getUsuarios(this.selectedField);
-        
+      this.snackBar.open('Usuario editado con éxito', 'Cerrar', { duration: 5000 });
     });
   }
 
@@ -131,6 +129,7 @@ getUsuarios(field: string): void {
   
     dialogRef.afterClosed().subscribe(result => {
       this.getUsuarios(this.selectedField);
+      this.snackBar.open('Roles del usuario actualizados con éxito', 'Cerrar', { duration: 5000 });
     });
   }
 }

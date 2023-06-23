@@ -3,6 +3,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { Roles } from 'src/app/models/roles';
 import { RolesService } from 'src/app/services/roles/roles.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
+
+
 
 @Component({
   selector: 'app-roles',
@@ -39,7 +43,7 @@ export class RolesComponent implements OnInit{
   }
   
 
-  constructor(private tiposDeDocumentoService: RolesService, public dialog: MatDialog) {}
+  constructor(private rolesService: RolesService, public dialog: MatDialog, private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.getRoles();
@@ -57,12 +61,12 @@ export class RolesComponent implements OnInit{
 
 getRoles(): void {
 
-  this.tiposDeDocumentoService.getAll().subscribe(
+  this.rolesService.getAll().subscribe(
     response => {
       this.dataSource = response;
     },
     error => {
-      console.log('Hubo un error al recuperar los roles:', error);
+      this.snackBar.open('Hubo un error al recuperar los roles', 'Cerrar', { duration: 5000 });
     }
   );
 }
