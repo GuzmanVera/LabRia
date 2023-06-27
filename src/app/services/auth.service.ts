@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ import { BehaviorSubject } from 'rxjs';
 export class AuthService {
   public errorMessage = new BehaviorSubject<string>('');
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router,  private snackBar: MatSnackBar) { }
 
   login(loginData: {username: string, password: string}) {
     return this.http.post<any>('http://localhost:5000/api/Auth/Login', loginData)
@@ -25,7 +26,9 @@ export class AuthService {
           localStorage.setItem('email', res.email);
           localStorage.setItem('roles', JSON.stringify(res.roles)); // Los roles son un array, por lo que los convertimos a un string JSON
           this.router.navigate(['/navbar']);
+          this.setUserRoles(res.roles);
           this.errorMessage.next(''); // Limpiar el mensaje de error
+          this.snackBar.open(`Bienvenido! ${res.nombre}`, 'Cerrar', { duration: 5000 });
         } else {
           // Inicio de sesión fallido
           this.errorMessage.next(res.statusMessage); // Emitir el mensaje de error
@@ -59,4 +62,17 @@ export class AuthService {
     const data = { email, token, password, confirmPassword };
     return this.http.post('http://localhost:5000/api/Auth/ResetPassword', data);
   }
+
+  private userRoles: string[] = []; // Ahora es un array para manejar múltiples roles
+
+  setUserRoles(roles: string[]) {
+    this.userRoles = roles;
+  }
+
+  getUserRoles(): string[] {
+    return this.userRoles;
+  }
+
 }
+
+

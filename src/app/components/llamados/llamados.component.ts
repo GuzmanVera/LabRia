@@ -76,7 +76,7 @@ getLlamados(): void {
 
 openCreateDialog(): void {
   const dialogRef = this.dialog.open(LlamadosDialogComponent, {
-    width: '250px',
+    width: '300px',
     data: {
       id: null,
       nombre: '',

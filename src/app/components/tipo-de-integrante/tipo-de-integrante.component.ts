@@ -5,6 +5,8 @@ import { TiposDeIntegranteService } from 'src/app/services/tipos-de-integrante/t
 import { TipoDeIntegranteDialogComponent } from './tipo-de-integrante-dialog/tipo-de-integrante-dialog.component';
 import { TipoDeDocumentoDeleteDialogComponent } from '../tipos-de-documento/tipo-de-documento-delete-dialog/tipo-de-documento-delete-dialog.component';
 import { PageEvent } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'app-tipo-de-integrante',
@@ -39,7 +41,7 @@ export class TipoDeIntegranteComponent {
     this.getTiposDeIntegrante();
   }
 
-  constructor(private tiposDeIntegranteService: TiposDeIntegranteService, public dialog: MatDialog) {}
+  constructor(private tiposDeIntegranteService: TiposDeIntegranteService, public dialog: MatDialog,  private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.getTiposDeIntegrante();
@@ -65,7 +67,7 @@ export class TipoDeIntegranteComponent {
         this.totalCount = response.totalCount;
       },
       error => {
-        console.log('Hubo un error al recuperar los tipos de documento:', error);
+        this.snackBar.open('Ocurrió un error al recuperar los tipos de integrante', 'Cerrar', { duration: 5000 });
       }
     );
   }
@@ -85,12 +87,14 @@ export class TipoDeIntegranteComponent {
         this.tiposDeIntegranteService.create(result).subscribe({
           next: (data) => {
             // Añadir el nuevo tipo de documento a la tabla.
+            this.snackBar.open('Tipo de integrante creado con éxito', 'Cerrar', { duration: 5000 });
             this.dataSource.push(data);
             this.getTiposDeIntegrante()
           },
           error: (error) => {
             // Manejo de errores
-            console.log('Hubo un error al crear el tipo de documento:', error);
+            this.snackBar.open('Ocurrió un problema al crear el tipo de integrante', 'Cerrar', { duration: 5000 });
+
           }
         });
       }
@@ -112,13 +116,14 @@ export class TipoDeIntegranteComponent {
             // Actualizar el tipo de documento en la tabla.
             const index = this.dataSource.findIndex(td => td.id === data.id);
             if (index !== -1) {
+              this.snackBar.open('Tipo de integrante actualizado con éxito', 'Cerrar', { duration: 5000 });
               this.dataSource[index] = data;
               this.getTiposDeIntegrante()
             }
           },
           error => {
             // Manejo de errores
-            console.log('Hubo un error al actualizar el tipo de documento:', error);
+            this.snackBar.open('Hubo un error durante la actualización', 'Cerrar', { duration: 5000 });
           }
         );
       }
@@ -141,6 +146,7 @@ export class TipoDeIntegranteComponent {
             // Eliminar el tipo de documento de la tabla.
             const index = this.dataSource.findIndex(td => td.id === data.id);
             if (index !== -1) {
+              this.snackBar.open('Tipo de integrante eliminado con éxito', 'Cerrar', { duration: 5000 });
               this.dataSource.splice(index, 1);
               
             }
@@ -148,7 +154,7 @@ export class TipoDeIntegranteComponent {
           },
           error => {
             // Manejo de errores
-            console.log('Hubo un error al eliminar el tipo de documento:', error);
+            this.snackBar.open('Hubo un error al eliminar el tipo de integrante', 'Cerrar', { duration: 5000 });
           }
         );
       }

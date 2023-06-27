@@ -5,6 +5,8 @@ import { AreasService } from 'src/app/services/areas/areas.service';
 import { AreasDialogComponent } from './areas-dialog/areas-dialog.component';
 import { AreasDeleteDialogComponent } from './areas-delete-dialog/areas-delete-dialog.component';
 import { PageEvent } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 
 @Component({
@@ -20,7 +22,7 @@ export class AreasComponent {
   sortDirection: 'asc' | 'desc' = 'asc'; // Dirección de la ordenación
   sortField: string = ''; // Campo de ordenación
 
-  constructor(private AreasService: AreasService, public dialog: MatDialog) {}
+  constructor(private AreasService: AreasService, public dialog: MatDialog,  private snackBar: MatSnackBar) {}
 
   onPaginateChange(event: PageEvent) {
     this.pageEvent = event;
@@ -66,7 +68,8 @@ export class AreasComponent {
         this.totalCount = response.totalCount;
       },
       error => {
-        console.log('Hubo un error al recuperar los tipos de documento:', error);
+        this.snackBar.open('Hubo un error al recuperar las áreas', 'Cerrar', { duration: 5000 });
+
       }
     );
   }
@@ -86,9 +89,11 @@ export class AreasComponent {
           next: (data) => {
             this.dataSource.push(data);
             this.getAreas()
+            this.snackBar.open('Área creada con éxito!', 'Cerrar', { duration: 5000 });
+
           },
           error: (error) => {
-            console.log('Hubo un error al crear el tipo de documento:', error);
+            this.snackBar.open('Hubo un error al crear el área', 'Cerrar', { duration: 5000 });
           }
         });
       }
@@ -113,11 +118,13 @@ export class AreasComponent {
             if (index !== -1) {
               this.dataSource[index] = data;
               this.getAreas()
+              this.snackBar.open('Área actualizada con éxito', 'Cerrar', { duration: 5000 });
+
             }
           },
           error => {
             // Manejo de errores
-            console.log('Hubo un error al actualizar el tipo de documento:', error);
+            this.snackBar.open('Hubo un error al actualizar el área', 'Cerrar', { duration: 5000 });
           }
         );
       }
@@ -141,15 +148,16 @@ export class AreasComponent {
             const index = this.dataSource.findIndex(td => td.id === data.id);
             if (index !== -1) {
               this.dataSource.splice(index, 1);
-              
+              this.getAreas();
+              this.snackBar.open('Área eliminada con éxito', 'Cerrar', { duration: 5000 });
             }
-            this.getAreas()
           },
           error => {
             // Manejo de errores
-            console.log('Hubo un error al eliminar el tipo de documento:', error);
+            this.snackBar.open('Hubo un error al eliminar el área', 'Cerrar', { duration: 5000 });
           }
         );
+        
       }
     });
   }

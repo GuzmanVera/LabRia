@@ -12,23 +12,28 @@ import { UsuariosComponent } from './components/usuarios/usuarios.component';
 import { RestorePasswordComponent } from './components/restore-password/restore-password.component';
 import { RolesComponent } from './components/roles/roles.component';
 import { LlamadosComponent } from './components/llamados/llamados.component';
+import { AdminGuard } from './services/admin-guard.service';
 
 const routes: Routes = [
   {
     path:'tiposDeDocumento',
-    component: TiposDeDocumentoComponent
+    component: TiposDeDocumentoComponent,
+    canActivate: [AdminGuard]
   },
   {
     path:'areas',
-    component: AreasComponent
+    component: AreasComponent,
+    canActivate: [AdminGuard]
   },
   {
     path:'tiposDeIntegrantes',
-    component: TipoDeIntegranteComponent
+    component: TipoDeIntegranteComponent,
+    canActivate: [AdminGuard]
   },
   {
     path:'llamadosEstadosPosibles',
-    component: LlamadosEstadosPosiblesComponent
+    component: LlamadosEstadosPosiblesComponent,
+    canActivate: [AdminGuard]
   },
   {
     path:'login',
@@ -44,17 +49,20 @@ const routes: Routes = [
   },
   {
     path:'personas',
-    component: PersonasComponent
+    component: PersonasComponent,
+    canActivate: [AdminGuard]
   },
   {
     path:'usuarios',
-    component: UsuariosComponent
+    component: UsuariosComponent,
+    canActivate: [AdminGuard]
   },
   { path: 'restore-password', 
     component: RestorePasswordComponent 
   },
   { path: 'roles', 
-    component: RolesComponent 
+    component: RolesComponent,
+    canActivate: [AdminGuard]
   },
   { path: 'llamados', 
     component: LlamadosComponent 

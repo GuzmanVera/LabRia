@@ -32,7 +32,7 @@ export class LlamadosDialogComponent implements OnInit {
         this.areas = response.list;
       },
       error => {
-        console.log('Hubo un error al recuperar las areas:', error);
+        this.snackBar.open('Hubo un error al recuperar las áreas', 'Cerrar', { duration: 5000 });
       }
     );
 
@@ -63,6 +63,7 @@ export class LlamadosDialogComponent implements OnInit {
   registerLlamado(llamado: any) {
     this.llamadosService.create(llamado).subscribe(
       response => {
+        this.snackBar.open('Registro de llamado realizado con éxito', 'Cerrar', { duration: 5000 });
         this.dialogRef.close(response);
       },
       error => {
@@ -76,6 +77,8 @@ export class LlamadosDialogComponent implements OnInit {
   updateLlamado(llamado: any) {
     this.llamadosService.update(this.data.id, llamado).subscribe(
       response => {
+        this.snackBar.open('LLamado actualizado con éxito', 'Cerrar', { duration: 5000 });
+
         this.dialogRef.close(response);
       },
       error => {
