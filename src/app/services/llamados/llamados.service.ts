@@ -38,7 +38,12 @@ export class LlamadosService {
       linkActa: llamados.linkActa,
       minutosEntrevista: llamados.minutosEntrevista,
       areaId: llamados.idArea,
-      area: null
+      area: null,
+      postulantes: [],
+      miembrosTribunal: [],
+      llamadosEstados: [],
+      ultimoEstado: null
+
     };
     console.log('llamadosService:',requestBody);
     return this.http.post<Llamados>(this.apiURL, requestBody);
@@ -58,4 +63,21 @@ export class LlamadosService {
   delete(id: number): Observable<any> {
     return this.http.delete<any>(`${this.apiURL}/${id}`);
   }
+
+  modificarEstado(user: string, obs: string, llamadoId: number, llamadoEstadoPosibleId: number ): Observable<any> {
+    const body = {
+      id: 0,
+      activo: true,
+      fechaHora: "2023-06-28T15:34:46.838Z" ,
+      usuarioTransicion: user,
+      observacion: obs,
+      llamadoId: llamadoId,
+      llamadoEstadoPosibleId: llamadoEstadoPosibleId,
+      llamadoEstadoPosible: null
+    };
+  
+    return this.http.post<any>(`http://localhost:5000/api/LlamadosEstados`, body);
+  }
+
+  
 }

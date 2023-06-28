@@ -6,13 +6,16 @@ import { LlamadosDialogComponent } from './llamados-dialog/llamados-dialog.compo
 import { MatDialog } from '@angular/material/dialog';
 import { LlamadosDeleteDialogComponent } from './llamados-delete-dialog/llamados-delete-dialog.component';
 
+import { LlamadosVerInfoComponent } from './llamados-ver-info/llamados-ver-info.component';
+import { LlamadosAdministrarEstadosComponent } from './llamados-administrar-estados/llamados-administrar-estados.component';
+
 @Component({
   selector: 'app-llamados',
   templateUrl: './llamados.component.html',
   styleUrls: ['./llamados.component.scss']
 })
 export class LlamadosComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'nombre', 'identificador', 'linkPlanillaPuntajes', 'linkActa', 'minutosEntrevista', 'area', 'activo', 'actions'];
+  displayedColumns: string[] = ['identificador', 'nombre', 'area', 'estado','acciones'];
   dataSource: Llamados[] = [];  // inicializa el dataSource aquí
   totalCount: number = 0;
   pageEvent: PageEvent = {pageIndex: 0, pageSize: 10, length: 0};
@@ -135,5 +138,26 @@ openCreateDialog(): void {
         );
       }
     });
+  }
+
+
+  openViewInfoDialog(element: any): void {
+    this.dialog.open(LlamadosVerInfoComponent, {
+      width: '500px',
+      data: {...element}
+    });
+  }
+
+  openAdminEstadosDialog(element: any): void {
+   const dialogRef = this.dialog.open(LlamadosAdministrarEstadosComponent, {
+      width: '610px',
+      data: {...element}
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      
+      this.getLlamados()
+    });
+
+
   }
 }

@@ -1,0 +1,29 @@
+<mat-card class="profile-card">
+    <mat-card-header class="profile-header">
+      <div>
+        <mat-card-title>Información del llamado: {{data.nombre}} </mat-card-title>
+      </div>
+      <span class="header-spacer"></span>
+      
+      
+    </mat-card-header>
+    <mat-card-content class="profile-content">
+      <div class="profile-field">
+        <span class="profile-label">Link planilla puntajes:</span>
+        <span class="profile-value">{{data.linkPlanillaPuntajes}}</span>
+      </div>
+      <!-- Repite este patrón para los otros campos -->
+      <div class="profile-field">
+        <span class="profile-label">Link acta:</span>
+        <span class="profile-value">{{data.linkActa}}</span>
+      </div>
+      
+      <div class="profile-field">
+        <span class="profile-label">Minutos entrevista:</span>
+        <span class="profile-value">{{data.minutosEntrevista}}</span>
+      </div>
+
+
+    </mat-card-content>
+    
+  </mat-card>

@@ -39,6 +39,9 @@ import { RolesComponent } from './components/roles/roles.component';
 import { LlamadosComponent } from './components/llamados/llamados.component';
 import { LlamadosDialogComponent } from './components/llamados/llamados-dialog/llamados-dialog.component';
 import { LlamadosDeleteDialogComponent } from './components/llamados/llamados-delete-dialog/llamados-delete-dialog.component';
+import { LlamadosVerInfoComponent } from './components/llamados/llamados-ver-info/llamados-ver-info.component';
+import { LlamadosAdministrarEstadosComponent } from './components/llamados/llamados-administrar-estados/llamados-administrar-estados.component';
+import { LlamadosModificarEstadosComponent } from './components/llamados/llamados-modificar-estados/llamados-modificar-estados.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -70,6 +73,9 @@ import { LlamadosDeleteDialogComponent } from './components/llamados/llamados-de
     LlamadosComponent,
     LlamadosDialogComponent,
     LlamadosDeleteDialogComponent,
+    LlamadosVerInfoComponent,
+    LlamadosAdministrarEstadosComponent,
+    LlamadosModificarEstadosComponent,
   ],
   imports: [
     BrowserModule,
