@@ -16,7 +16,7 @@ export class LlamadosService {
       limit: limit,
       offset: offset,
       id: 0,
-      filters: { activo: null, nombre: filterValue || "" },
+      filters: { activo: null, nombre: filterValue || "", identificador: ""},
       orders: sort ? [sort] : [""]
     };
   
