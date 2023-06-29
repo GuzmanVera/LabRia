@@ -1,0 +1,66 @@
+<mat-card class="postulantes-card">
+    <mat-card-header class="postulantes-header">
+      <div>
+        <mat-card-title>Postulantes: {{data.nombre}} </mat-card-title>
+      </div>
+      <span class="header-spacer"></span>
+      <button class="create-button" mat-raised-button color="primary" (click)="openAgregarPostulanteDialog(data)" matTooltip="añadir postulante">
+        <mat-icon>add</mat-icon>
+      </button>
+    </mat-card-header>
+
+    <mat-card-content class="profile-content">
+        <div class="profile-field">
+          <span class="profile-label">Postulantes:</span>
+          <table mat-table class="postulantes-table mat-elevation-z8" [dataSource]="data.postulantes">
+            <!-- Definición de las columnas -->
+
+            <ng-container matColumnDef="nombre">
+              <th mat-header-cell *matHeaderCellDef>Nombre del postulante</th>
+              <td mat-cell *matCellDef="let postulante">{{postulante.persona.primerNombre}} {{postulante.persona.primerApellido}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="fechaHoraEntrevista">
+              <th mat-header-cell *matHeaderCellDef>Fecha de la Entrevista</th>
+              <td mat-cell *matCellDef="let postulante">{{postulante.fechaHoraEntrevista | date:'short'}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="estudioMeritosRealizado">
+              <th mat-header-cell *matHeaderCellDef>Estudio de Méritos Realizado</th>
+              <td mat-cell *matCellDef="let postulante">
+                {{postulante.estudioMeritosRealizado}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="entrevistaRealizada">
+              <th mat-header-cell *matHeaderCellDef>Entrevista Realizada</th>
+              <td mat-cell *matCellDef="let postulante">
+                {{postulante.entrevistaRealizada}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="edit">
+              <th mat-header-cell *matHeaderCellDef>Editar</th>
+              <td mat-cell *matCellDef="let postulante">
+                <button mat-icon-button color="accent" (click)="openEditarPostulanteDialog(postulante)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="delete">
+              <th mat-header-cell *matHeaderCellDef>Eliminar</th>
+              <td mat-cell *matCellDef="let postulante">
+                <button mat-icon-button color="accent" (click)="openEliminarPostulanteDialog(postulante)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+            
+
+            <tr mat-header-row *matHeaderRowDef="['nombre', 'fechaHoraEntrevista', 'estudioMeritosRealizado', 'entrevistaRealizada', 'edit', 'delete']">
+            <tr mat-row *matRowDef="let row; columns: ['nombre', 'fechaHoraEntrevista', 'estudioMeritosRealizado', 'entrevistaRealizada', 'edit', 'delete'];"></tr>
+          </table>
+        </div>
+      </mat-card-content>
+</mat-card>

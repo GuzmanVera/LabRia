@@ -47,6 +47,11 @@ import { AgregarMiembroTribunalComponent } from './components/llamados/llamados-
 import { ResponsabilidadesComponent } from './components/responsabilidades/responsabilidades.component';
 import { ResponsabilidadesDialogComponent } from './components/responsabilidades/responsabilidades-dialog/responsabilidades-dialog.component';
 import { ResponsabilidadesDeleteDialogComponent } from './components/responsabilidades/responsabilidades-delete-dialog/responsabilidades-delete-dialog.component';
+import { LlamadosPostulantesComponent } from './components/llamados/llamados-postulantes/llamados-postulantes.component';
+import { AgregarPostulanteComponent } from './components/llamados/llamados-postulantes/agregar-postulante/agregar-postulante.component';
+import { EditarPostulanteComponent } from './components/llamados/llamados-postulantes/editar-postulante/editar-postulante.component';
+import { EliminarPostulanteComponent } from './components/llamados/llamados-postulantes/eliminar-postulante/eliminar-postulante.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -86,6 +91,10 @@ import { ResponsabilidadesDeleteDialogComponent } from './components/responsabil
     ResponsabilidadesComponent,
     ResponsabilidadesDialogComponent,
     ResponsabilidadesDeleteDialogComponent,
+    LlamadosPostulantesComponent,
+    AgregarPostulanteComponent,
+    EditarPostulanteComponent,
+    EliminarPostulanteComponent,
   ],
   imports: [
     BrowserModule,

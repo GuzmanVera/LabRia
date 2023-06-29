@@ -1,0 +1,18 @@
+<h1 mat-dialog-title>Editar Postulante</h1>
+<div mat-dialog-content>
+  <form [formGroup]="postulanteForm" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <input matInput [matDatepicker]="picker" placeholder="Fecha de la Entrevista" formControlName="fechaHoraEntrevista">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-checkbox formControlName="estudioMeritosRealizado">Estudio de Méritos Realizado</mat-checkbox>
+    <mat-checkbox formControlName="entrevistaRealizada">Entrevista Realizada</mat-checkbox>
+
+    <div mat-dialog-actions>
+      <button mat-button (click)="onNoClick()">Cancelar</button>
+      <button mat-button cdkFocusInitial type="submit">Guardar</button>
+    </div>
+  </form>
+</div>

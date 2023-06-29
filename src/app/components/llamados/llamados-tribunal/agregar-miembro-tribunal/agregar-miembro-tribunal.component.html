@@ -1,4 +1,7 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
+<h2 mat-dialog-title>Agregar miembro al tribunal</h2>
+
+<div mat-dialog-content>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <mat-form-field>
       <mat-label>Selecciona un usuario</mat-label>
       <mat-select formControlName="usuario">
@@ -8,13 +11,17 @@
       </mat-select>
     </mat-form-field>
     <mat-form-field>
-        <mat-label>Selecciona un tipo de integrante</mat-label>
-        <mat-select formControlName="tiposDeIntegrantes">
-          <mat-option *ngFor="let tipoDeIntegrante of tiposDeIntegrantes" [value]="tipoDeIntegrante">
-            {{tipoDeIntegrante.nombre}} orden: {{tipoDeIntegrante.orden}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    <button mat-button color="primary" type="submit">Agregar</button>
+      <mat-label>Selecciona un tipo de integrante</mat-label>
+      <mat-select formControlName="tiposDeIntegrantes">
+        <mat-option *ngFor="let tipoDeIntegrante of tiposDeIntegrantes" [value]="tipoDeIntegrante">
+          {{tipoDeIntegrante.nombre}} orden: {{tipoDeIntegrante.orden}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div mat-dialog-actions class="custom-dialog-actions">
+      <button mat-button (click)="onNoClick()">Cancelar</button>
+      <button mat-button color="primary" type="submit">Agregar</button>
+    </div>
   </form>
-  
+</div>

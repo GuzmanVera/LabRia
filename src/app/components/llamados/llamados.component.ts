@@ -8,6 +8,7 @@ import { LlamadosDeleteDialogComponent } from './llamados-delete-dialog/llamados
 import { LlamadosVerInfoComponent } from './llamados-ver-info/llamados-ver-info.component';
 import { LlamadosAdministrarEstadosComponent } from './llamados-administrar-estados/llamados-administrar-estados.component';
 import { LlamadosTribunalComponent } from './llamados-tribunal/llamados-tribunal.component';
+import { LlamadosPostulantesComponent } from './llamados-postulantes/llamados-postulantes.component';
 
 @Component({
   selector: 'app-llamados',
@@ -142,6 +143,7 @@ openCreateDialog(): void {
 
 
   openViewInfoDialog(element: any): void {
+    console.log(element);
     this.dialog.open(LlamadosVerInfoComponent, {
       width: '500px',
       data: {...element}
@@ -162,7 +164,7 @@ openCreateDialog(): void {
   
   openAdminTribunalDialog(element: any): void {
     const dialogRef = this.dialog.open(LlamadosTribunalComponent, {
-       width: '500px',
+       width: '550px',
        data: {...element}
      });
      dialogRef.afterClosed().subscribe(result => {
@@ -170,4 +172,13 @@ openCreateDialog(): void {
        this.getLlamados()
      });
    }
+
+
+   openPostulantesDialog(element: any): void {
+    this.dialog.open(LlamadosPostulantesComponent, {
+      width: '600px',
+      data: {...element}
+    });
+  }
+  
 }

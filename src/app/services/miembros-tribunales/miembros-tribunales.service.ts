@@ -26,6 +26,20 @@ export class MiembrosTribunalesService {
     
     return this.http.post<any>(this.apiURL, requestBody);
   }
+
+  update(id: number, llamadoId: number, personaId: string, tipoIntegranteId: number): Observable<any> {
+    const requestBody = {
+      id: id,
+      activo: true,
+      renuncia: false,
+      motivoRenuncia: "",
+      llamadoId: llamadoId,
+      personaId: personaId,
+      tipoDeIntegranteId: tipoIntegranteId
+    };
+    
+    return this.http.put<any>(`${this.apiURL}/${id}`, requestBody);
+  }
   
   
 }

@@ -27,8 +27,6 @@ export class UsuariosService {
     return this.http.post(`${this.apiURL}/Register`, user);
   }
 
-  
-
   get(id: number): Observable<Usuarios> {
     return this.http.get<Usuarios>(`${this.apiURL}/${id}`);
   }

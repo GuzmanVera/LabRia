@@ -37,13 +37,15 @@ export class LlamadosTribunalComponent implements  OnInit {
     });
   }
 
-
-  openModificarMiembroDialog(element: any): void {
-    this.dialog.open(LlamadosTribunalComponent, {
+  openModificarMiembroDialog(miembro: any): void {
+    this.dialog.open(AgregarMiembroTribunalComponent, {
       width: '400px',
-      data: {...element}
+      data: {...miembro, isEditing: true} // Agregar una propiedad isEditing para saber que estamos editando
     });
   }
+
+
+
 
   openAgregarMiembroDialog(element: any): void {
     this.dialog.open(AgregarMiembroTribunalComponent, {
