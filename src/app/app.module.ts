@@ -42,6 +42,11 @@ import { LlamadosDeleteDialogComponent } from './components/llamados/llamados-de
 import { LlamadosVerInfoComponent } from './components/llamados/llamados-ver-info/llamados-ver-info.component';
 import { LlamadosAdministrarEstadosComponent } from './components/llamados/llamados-administrar-estados/llamados-administrar-estados.component';
 import { LlamadosModificarEstadosComponent } from './components/llamados/llamados-modificar-estados/llamados-modificar-estados.component';
+import { LlamadosTribunalComponent } from './components/llamados/llamados-tribunal/llamados-tribunal.component';
+import { AgregarMiembroTribunalComponent } from './components/llamados/llamados-tribunal/agregar-miembro-tribunal/agregar-miembro-tribunal.component';
+import { ResponsabilidadesComponent } from './components/responsabilidades/responsabilidades.component';
+import { ResponsabilidadesDialogComponent } from './components/responsabilidades/responsabilidades-dialog/responsabilidades-dialog.component';
+import { ResponsabilidadesDeleteDialogComponent } from './components/responsabilidades/responsabilidades-delete-dialog/responsabilidades-delete-dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -76,6 +81,11 @@ import { LlamadosModificarEstadosComponent } from './components/llamados/llamado
     LlamadosVerInfoComponent,
     LlamadosAdministrarEstadosComponent,
     LlamadosModificarEstadosComponent,
+    LlamadosTribunalComponent,
+    AgregarMiembroTribunalComponent,
+    ResponsabilidadesComponent,
+    ResponsabilidadesDialogComponent,
+    ResponsabilidadesDeleteDialogComponent,
   ],
   imports: [
     BrowserModule,

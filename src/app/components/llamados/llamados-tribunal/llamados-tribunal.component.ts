@@ -1,26 +1,35 @@
+
 import { Component, Inject, OnInit  } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { LlamadosEstadosPosibles } from 'src/app/models/llamados-estados-posibles';
 import { LlamadosEstadosPosiblesService } from 'src/app/services/llamados-estados-posibles/llamados-estados-posibles.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormGroup, FormControl } from '@angular/forms';
 import { LlamadosService} from 'src/app/services/llamados/llamados.service';
+import { AgregarMiembroTribunalComponent} from './agregar-miembro-tribunal/agregar-miembro-tribunal.component';
+import { Usuarios } from 'src/app/models/usuarios';
+import { UsuariosService } from 'src/app/services/usuarios/usuarios.service';
 
 @Component({
-  selector: 'app-llamados-modificar-estados',
-  templateUrl: './llamados-modificar-estados.component.html',
-  styleUrls: ['./llamados-modificar-estados.component.scss']
+  selector: 'app-llamados-tribunal',
+  templateUrl: './llamados-tribunal.component.html',
+  styleUrls: ['./llamados-tribunal.component.scss']
 })
-export class LlamadosModificarEstadosComponent implements OnInit {
+
+
+
+export class LlamadosTribunalComponent implements  OnInit {
   form: FormGroup;
-  estados: LlamadosEstadosPosibles[] = [];
+  usuarios: Usuarios[] = []; 
 
   constructor(
-    public dialogRef: MatDialogRef<LlamadosModificarEstadosComponent>,
+    public dialogRef: MatDialogRef<LlamadosTribunalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any, 
     private llamadosEstadosPosiblesService: LlamadosEstadosPosiblesService, 
     private llamadosService: LlamadosService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    public dialog: MatDialog,
+    private usuariosService: UsuariosService
   ) { 
     this.form = new FormGroup({
       idEstado: new FormControl(null),
@@ -28,16 +37,25 @@ export class LlamadosModificarEstadosComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.llamadosEstadosPosiblesService.getAll(0, -1).subscribe(
-      response => {
-        this.estados = response.list;
-      },
-      error => {
-        this.snackBar.open('Hubo un error al recuperar las áreas', 'Cerrar', { duration: 5000 });
-      }
-    );
+
+  openModificarMiembroDialog(element: any): void {
+    this.dialog.open(LlamadosTribunalComponent, {
+      width: '400px',
+      data: {...element}
+    });
   }
+
+  openAgregarMiembroDialog(element: any): void {
+    this.dialog.open(AgregarMiembroTribunalComponent, {
+      width: '400px',
+      data: {...element}
+    });
+  }
+
+  ngOnInit(): void {
+    
+  }
+  
 
   onSubmit() {
     if (this.form.valid) {

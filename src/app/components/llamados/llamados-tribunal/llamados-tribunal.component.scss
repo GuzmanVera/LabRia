@@ -1,0 +1,74 @@
+.mat-card {
+    margin: 20px;
+    box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+  }
+  
+  .miembros-card {
+    width: 80%;
+    margin: auto;
+  }
+  
+  .miembros-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #3f51b5;
+    color: white;
+    padding: 10px;
+  }
+  
+  .header-spacer {
+    flex-grow: 1;
+  }
+  
+  .create-button {
+    margin-left: 10px;
+  }
+  
+  .profile-content {
+    padding: 20px;
+  }
+  
+  .profile-field {
+    margin-bottom: 20px;
+  }
+  
+  .profile-label {
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: block;
+  }
+  
+  .miembros-table {
+    width: 100%;
+    border-collapse: collapse;
+    
+  }
+  
+  .miembros-table th {
+    border: 1px solid #ddd;
+    padding: 8px;
+    background-color: #f2f2f2;
+    text-align: left;
+  }
+  
+  .miembros-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  .miembros-table tr:nth-child(even){background-color: #f2f2f2;}
+  
+  .miembros-table tr:hover {background-color: #ddd;}
+  
+  .miembros-actions {
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px;
+  }
+  
+  .action-button {
+    margin-left: 10px;
+  }
+
+  

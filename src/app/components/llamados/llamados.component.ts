@@ -5,9 +5,9 @@ import { LlamadosService } from 'src/app/services/llamados/llamados.service';
 import { LlamadosDialogComponent } from './llamados-dialog/llamados-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { LlamadosDeleteDialogComponent } from './llamados-delete-dialog/llamados-delete-dialog.component';
-
 import { LlamadosVerInfoComponent } from './llamados-ver-info/llamados-ver-info.component';
 import { LlamadosAdministrarEstadosComponent } from './llamados-administrar-estados/llamados-administrar-estados.component';
+import { LlamadosTribunalComponent } from './llamados-tribunal/llamados-tribunal.component';
 
 @Component({
   selector: 'app-llamados',
@@ -157,7 +157,17 @@ openCreateDialog(): void {
       
       this.getLlamados()
     });
-
-
   }
+
+  
+  openAdminTribunalDialog(element: any): void {
+    const dialogRef = this.dialog.open(LlamadosTribunalComponent, {
+       width: '500px',
+       data: {...element}
+     });
+     dialogRef.afterClosed().subscribe(result => {
+       
+       this.getLlamados()
+     });
+   }
 }

@@ -1,0 +1,32 @@
+<h2 mat-dialog-title>{{ data.id ? 'Editar' : 'Crear' }} Llamados</h2>
+
+<div mat-dialog-content>
+  <form [formGroup]="responsabilidadesForm" (ngSubmit)="onSubmit()" class="custom-form">
+    <mat-form-field>
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="nombre" name="nombre">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Descripcion</mat-label>
+      <input matInput formControlName="descripcion" name="descripcion">
+    </mat-form-field>
+
+    <mat-form-field class="form-field">
+      <mat-label>Area</mat-label>
+      <mat-select formControlName="idArea">
+        <mat-option *ngFor="let area of areas" [value]="area.id">
+          {{ area.nombre }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-checkbox formControlName="activo" name="activo">Activo</mat-checkbox>
+
+    <div mat-dialog-actions class="custom-dialog-actions">
+      <button mat-button (click)="onNoClick()">Cancelar</button>
+      <button mat-button cdkFocusInitial type="submit">{{ data.id ? 'Guardar' : 'Crear' }}</button>
+    </div>
+
+    </form>
+</div>

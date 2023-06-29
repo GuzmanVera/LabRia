@@ -13,7 +13,7 @@ import { RestorePasswordComponent } from './components/restore-password/restore-
 import { RolesComponent } from './components/roles/roles.component';
 import { LlamadosComponent } from './components/llamados/llamados.component';
 import { AdminGuard } from './services/admin-guard.service';
-
+import { ResponsabilidadesComponent } from './components/responsabilidades/responsabilidades.component';
 const routes: Routes = [
   {
     path:'tiposDeDocumento',
@@ -66,6 +66,10 @@ const routes: Routes = [
   },
   { path: 'llamados', 
     component: LlamadosComponent 
+  },
+  { path: 'responsabilidades', 
+    component: ResponsabilidadesComponent,
+    canActivate: [AdminGuard]
   },
 
 ];
