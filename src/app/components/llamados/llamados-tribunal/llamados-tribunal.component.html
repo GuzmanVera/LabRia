@@ -47,6 +47,9 @@
                   <button mat-icon-button color="primary" (click)="openModificarMiembroDialog(miembro)">
                     <mat-icon>edit</mat-icon>
                   </button>
+                  <button *ngIf="isAdmin" mat-icon-button color="warn" (click)="openRenunciarDialog(data, miembro)" matTooltip="renunciar al tribunal">
+                    <mat-icon>exit_to_app</mat-icon>
+                  </button> 
               </td>
             </ng-container>
 

@@ -4,7 +4,9 @@
         <mat-card-title>Información del llamado: {{data.nombre}} </mat-card-title>
       </div>
       <span class="header-spacer"></span>
-      
+      <button mat-icon-button color="primary" (click)="openEditDialog()" matTooltip="administrar postulantes">
+        <mat-icon>edit</mat-icon>
+      </button>
       
     </mat-card-header>
     <mat-card-content class="profile-content">
@@ -22,7 +24,16 @@
         <span class="profile-label">Minutos entrevista:</span>
         <span class="profile-value">{{data.minutosEntrevista}}</span>
       </div>
-
+      
+      <div class="profile-field">
+        <span class="profile-label">Responsabilidades:</span>
+        <span class="profile-value">
+          <ul>
+            <li *ngFor="let responsabilidad of responsabilidades">{{ responsabilidad.nombre }}: {{responsabilidad.descripcion}}</li>
+          </ul>
+        </span>
+      </div>
+      
 
     </mat-card-content>
     

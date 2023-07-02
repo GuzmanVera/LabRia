@@ -26,10 +26,19 @@ export class LlamadosDialogComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-
     this.areasService.getAll(0, -1).subscribe(
       response => {
         this.areas = response.list;
+  
+        // Encuentra el area correspondiente en la lista de areas
+        if (this.data && this.data.idArea) {
+          const area = this.areas.find(area => area.id === this.data.idArea);
+          if (area) {
+            this.llamadosForm.patchValue({
+              idArea: area.id
+            });
+          }
+        }
       },
       error => {
         this.snackBar.open('Hubo un error al recuperar las áreas', 'Cerrar', { duration: 5000 });
@@ -47,7 +56,24 @@ export class LlamadosDialogComponent implements OnInit {
       idArea: ['', Validators.required],
   });
 
+  
+    if (this.data && this.data.id) {
+      console.log(this.data);
+      this.llamadosForm.patchValue({
+        'id': this.data.id,	
+        'activo': this.data.activo,
+        'identificador': this.data.identificador,
+        'nombre': this.data.nombre,
+        'linkPlanillaPuntajes': this.data.linkPlanillaPuntajes,
+        'linkActa': this.data.linkActa,
+        'minutosEntrevista': this.data.minutosEntrevista,
+        'area': this.data.area.nombre,
+        'idArea': this.data.area.id,
+      });
+    }
   }
+
+  
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -55,8 +81,12 @@ export class LlamadosDialogComponent implements OnInit {
 
   onSubmit() {
     if (this.llamadosForm.valid) {
-        const llamado = this.llamadosForm.value;
+      const llamado = this.llamadosForm.value;
+      if (this.data) { // En caso de edición
+        this.updateLlamado(llamado);
+      } else { // En caso de creación
         this.registerLlamado(llamado);
+      }
     }
 }
 

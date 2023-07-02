@@ -9,6 +9,12 @@ import { LlamadosVerInfoComponent } from './llamados-ver-info/llamados-ver-info.
 import { LlamadosAdministrarEstadosComponent } from './llamados-administrar-estados/llamados-administrar-estados.component';
 import { LlamadosTribunalComponent } from './llamados-tribunal/llamados-tribunal.component';
 import { LlamadosPostulantesComponent } from './llamados-postulantes/llamados-postulantes.component';
+import { PersonasService } from 'src/app/services/personas/personas.service';
+import { TiposDeDocumentoService } from 'src/app/services/tipos-de-documento/tipos-de-documento.service';
+import { switchMap, filter, toArray, map } from 'rxjs/operators';
+import { from } from 'rxjs';
+
+
 
 @Component({
   selector: 'app-llamados',
@@ -22,7 +28,10 @@ export class LlamadosComponent implements OnInit {
   pageEvent: PageEvent = {pageIndex: 0, pageSize: 10, length: 0};
   sortDirection: 'asc' | 'desc' = 'asc'; // Dirección de la ordenación
   sortField: string = ''; // Campo de ordenación
+  usuarioLogueadoId!: number; // Definición de la nueva propiedad
 
+  public isAdmin: boolean = false;
+  
 
   onPaginateChange(event: PageEvent) {
     this.pageEvent = event;
@@ -45,7 +54,7 @@ export class LlamadosComponent implements OnInit {
   }
   
 
-  constructor(private llamadosService: LlamadosService, public dialog: MatDialog) {}
+  constructor(private llamadosService: LlamadosService, public dialog: MatDialog, private personasService: PersonasService, private tipoDeDocumentoService: TiposDeDocumentoService ) {}
 
   ngOnInit(): void {
     this.getLlamados();
@@ -67,15 +76,73 @@ getLlamados(): void {
   const offset = pageIndex * pageSize;
   const sort = this.sortField ? `${this.sortField} ${this.sortDirection}` : '';
   
-  this.llamadosService.getAll(offset, pageSize, this.filterValue, sort).subscribe(
-    response => {
-      this.dataSource = response.list;
-      this.totalCount = response.totalCount;
-    },
-    error => {
-      console.log('Hubo un error al recuperar los tipos de documento:', error);
+  const roles = localStorage.getItem('roles');
+  const tipoDocumentoUser = localStorage.getItem('tipoDocumento');
+  const documentoUser = localStorage.getItem('documento');
+
+  
+  
+
+
+  if (roles) {
+    const rolesArray = JSON.parse(roles);
+    if (rolesArray.includes('ADMIN')) {
+      this.isAdmin = true;
+      this.llamadosService.getAll(offset, pageSize, this.filterValue, sort).subscribe(
+        response => {
+          this.dataSource = response.list;
+          console.log(this.dataSource);
+          this.totalCount = response.totalCount;
+        },
+        error => {
+          console.log('Hubo un error al recuperar los llamados:', error);
+        }
+      );
+    } else if (rolesArray.includes('TRIBUNAL')) {
+      this.isAdmin = false;
+      this.tipoDeDocumentoService.getAll(0, -1, tipoDocumentoUser ?? '').subscribe(
+        response => {
+          if (response && response.list && response.list.length > 0) {
+            const tipoDocumentoId = response.list[0].id;
+            this.personasService.getPorDocumento(tipoDocumentoId, documentoUser ?? '').subscribe(
+              response => {
+                this.usuarioLogueadoId = response.id;
+                this.llamadosService.getAll(offset, pageSize, this.usuarioLogueadoId.toString(), sort).pipe(
+                  switchMap((response: { list: Llamados[] }) => from(response.list)),
+                  switchMap((llamado: Llamados) => this.llamadosService.haRenunciado(llamado.id, this.usuarioLogueadoId).pipe(
+                    map(haRenunciado => {
+                      if (!haRenunciado) {
+                        return llamado;
+                      } else {
+                        return null;
+                      }
+                    })
+                  )),
+                  filter(llamado => !!llamado),
+                  toArray()
+                ).subscribe(
+                  response => {
+                    this.dataSource = response.filter((llamado): llamado is Llamados => !!llamado);
+                    console.log(this.dataSource);
+                    this.totalCount = this.dataSource.length;  // <--- And here
+                  },
+                  error => {
+                    console.log('Hubo un error al recuperar los llamados:', error);
+                  }
+                );
+              }
+            );
+          }
+        },
+        error => {
+          console.log('Hubo un error al recuperar los tipos de documento:', error);
+        }
+      );
+      // Aquí va el resto de tu código...
     }
-  );
+    
+  }
+  
 }
 
 openCreateDialog(): void {
@@ -144,9 +211,13 @@ openCreateDialog(): void {
 
   openViewInfoDialog(element: any): void {
     console.log(element);
-    this.dialog.open(LlamadosVerInfoComponent, {
+    const dialogRef = this.dialog.open(LlamadosVerInfoComponent, {
       width: '500px',
       data: {...element}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.getLlamados();
     });
   }
 
@@ -165,7 +236,7 @@ openCreateDialog(): void {
   openAdminTribunalDialog(element: any): void {
     const dialogRef = this.dialog.open(LlamadosTribunalComponent, {
        width: '550px',
-       data: {...element}
+       data: {...element, isTribunal:this.isAdmin}
      });
      dialogRef.afterClosed().subscribe(result => {
        
@@ -182,3 +253,4 @@ openCreateDialog(): void {
   }
   
 }
+

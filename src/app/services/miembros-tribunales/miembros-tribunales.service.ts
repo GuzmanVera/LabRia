@@ -27,7 +27,7 @@ export class MiembrosTribunalesService {
     return this.http.post<any>(this.apiURL, requestBody);
   }
 
-  update(id: number, llamadoId: number, personaId: string, tipoIntegranteId: number): Observable<any> {
+  update(id: number, llamadoId: number, personaId: number, tipoIntegranteId: number): Observable<any> {
     const requestBody = {
       id: id,
       activo: true,
@@ -41,5 +41,18 @@ export class MiembrosTribunalesService {
     return this.http.put<any>(`${this.apiURL}/${id}`, requestBody);
   }
   
+  renunciar(id: number, llamadoId: number, personaId: number, tipoIntegranteId: number, motivoRenuncia: String): Observable<any> {
+    const requestBody = {
+      id: id,
+      activo: true,
+      renuncia: true,
+      motivoRenuncia: motivoRenuncia,
+      llamadoId: llamadoId,
+      personaId: personaId,
+      tipoDeIntegranteId: tipoIntegranteId
+    };
+    
+    return this.http.put<any>(`${this.apiURL}/${id}`, requestBody);
+  }
   
 }

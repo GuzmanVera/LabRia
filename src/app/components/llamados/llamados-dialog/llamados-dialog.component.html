@@ -30,11 +30,10 @@
     <mat-form-field class="form-field">
       <mat-label>Area</mat-label>
       <mat-select formControlName="idArea">
-        <mat-option *ngFor="let area of areas" [value]="area.id">
-          {{ area.nombre }}
-        </mat-option>
+        <mat-option *ngFor="let area of areas" [value]="area.id">{{area.nombre}}</mat-option>
       </mat-select>
     </mat-form-field>
+    
 
     <mat-checkbox formControlName="activo" name="activo">Activo</mat-checkbox>
 

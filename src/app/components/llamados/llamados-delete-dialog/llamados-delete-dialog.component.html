@@ -1,8 +1,16 @@
-<h1 mat-dialog-title>Eliminar Llamado</h1>
+<h1 mat-dialog-title>Renunciar al Llamado</h1>
+
 <div mat-dialog-content>
-  <p>¿Estás seguro de que quieres eliminar el llamado {{data.nombre}}?</p>
+  <p>¿Estás seguro de que quieres declarar la renuncia de {{data.miembro.persona.primerNombre}} {{data.miembro.persona.primerApellido}} como miembro del tribunal del llamado {{data.nombre}}?</p>
+  <form [formGroup]="renunciaForm">
+    <mat-form-field>
+      <mat-label>Motivo de renuncia</mat-label>
+      <input matInput formControlName="motivoRenuncia">
+    </mat-form-field>
+  </form>
 </div>
+
 <div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">No</button>
-  <button mat-button [mat-dialog-close]="data.id" cdkFocusInitial>Sí</button>
+  <button mat-button (click)="onNoClick()">Cancelar</button>
+  <button mat-button [mat-dialog-close]="data.id" (click)="renunciar()" cdkFocusInitial>Renunciar</button>
 </div>

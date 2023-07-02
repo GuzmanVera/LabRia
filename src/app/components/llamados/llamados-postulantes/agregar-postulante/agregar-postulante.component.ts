@@ -5,6 +5,9 @@ import { UsuariosService } from 'src/app/services/usuarios/usuarios.service';
 import { PostulantesService } from 'src/app/services/postulantes/postulantes.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UsuariosDialogComponent } from 'src/app/components/usuarios/usuarios-dialog/usuarios-dialog.component';
+import { PersonasDialogComponent } from 'src/app/components/personas/personas-dialog/personas-dialog.component';
+import { PersonasService } from 'src/app/services/personas/personas.service';
+import { TiposDeDocumentoService } from 'src/app/services/tipos-de-documento/tipos-de-documento.service';
 
 @Component({
   selector: 'app-agregar-postulante',
@@ -13,32 +16,42 @@ import { UsuariosDialogComponent } from 'src/app/components/usuarios/usuarios-di
 })
 export class AgregarPostulanteComponent implements OnInit {
 
-  usuarios: any[] = [];
+  usuarios: any;
+  tiposDocumento: any;
   form: FormGroup;
 
   constructor(
     public dialogRef: MatDialogRef<AgregarPostulanteComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any, 
     private usuariosService: UsuariosService, 
+    private personasService: PersonasService,
     private fb: FormBuilder,
     private PostulantesService: PostulantesService,
     private snackBar: MatSnackBar,
+    private tipoDeDocumentoService: TiposDeDocumentoService,
     public dialog: MatDialog  ) { 
     this.form = this.fb.group({
       usuario: new FormControl(null, Validators.required),
       documento: new FormControl(null, Validators.required),
+      tipoDocumento: new FormControl(null, Validators.required),
     });
   }
-
+  
   ngOnInit(): void {
+    this.getTipoDocumento();
   }
 
   buscarUsuarioPorDocumento(): void {
+    this.usuarios = [];
     const documento = this.form.get('documento')?.value;
     if (documento) {
-      this.usuariosService.getAll(0, 1000, documento, undefined, 'documento').subscribe(
+      this.personasService.getPorDocumento(this.form.get('tipoDocumento')?.value,documento).subscribe(
         response => {
-          this.usuarios = response.list.filter((user: { roles: string | string[]; }) => user.roles.includes('USER'));
+          // Agrega el usuario encontrado a la lista de usuarios
+          if(response != null){
+            this.usuarios.push(response);
+          }
+         
         },
         error => {
           this.snackBar.open('Hubo un error al buscar el usuario', 'Cerrar', { duration: 5000 });
@@ -46,16 +59,30 @@ export class AgregarPostulanteComponent implements OnInit {
       );
     }
   }
+  
 
   getUsuarios(): void {
     this.usuariosService.getAll(0, 1000, undefined, undefined, 'nombre').subscribe(
       response => {
-        this.usuarios = response.list.filter((user: { roles: string | string[]; }) => user.roles.includes('USER'));
+        if (response != null){
+          this.usuarios = response.list.filter((user: { roles: string | string[]; }) => user.roles.includes('USER'));
+        }
       },
       error => {
         this.snackBar.open('Hubo un error al recuperar los usuarios', 'Cerrar', { duration: 5000 });
       }
     );
+  }
+
+  getTipoDocumento(): void {
+    this.tipoDeDocumentoService.getAll(0,-1).subscribe(
+      response => {
+        this.tiposDocumento = response.list;
+      },
+      error => {
+        this.snackBar.open('Hubo un error al recuperar los tipos de documento', 'Cerrar', {duration: 5000});
+      }
+    )
   }
 
   
@@ -82,7 +109,7 @@ export class AgregarPostulanteComponent implements OnInit {
   }
 
   openCreateDialog(): void {
-    const dialogRef = this.dialog.open(UsuariosDialogComponent, {
+    const dialogRef = this.dialog.open(PersonasDialogComponent, {
       width: '500px',
       data: {
         nombre: '',
@@ -92,17 +119,7 @@ export class AgregarPostulanteComponent implements OnInit {
   
     dialogRef.afterClosed().subscribe(result => {
       // "result" contiene los datos devueltos por el diálogo. En este caso, el tipo de documento a crear.
-      if (result) {
-        this.usuariosService.create(result).subscribe({
-          next: (data) => {
-            
-            this.snackBar.open('Usuario creado con éxito', 'Cerrar', { duration: 5000 });
-          },
-          error: (error) => {
-            this.snackBar.open('Hubo un error al crear el usuario', 'Cerrar', { duration: 5000 });
-          }
-        });
-      }
+      
     });
     this.getUsuarios()
   }

@@ -1,32 +1,51 @@
 <h2 mat-dialog-title>{{ data.id ? 'Editar' : 'Crear' }} Personas</h2>
 
 <div mat-dialog-content>
-  <form>
-    <mat-checkbox [(ngModel)]="data.activo" name="activo">Activo</mat-checkbox>
+  <form [formGroup]="PersonasForm" (ngSubmit)="onSubmit()" class="custom-form">
+    <mat-checkbox formControlName="activo" [(ngModel)]="data.activo" name="activo">Activo</mat-checkbox>
 
-    <mat-form-field>
-      <mat-label>Nombre</mat-label>
-      <input matInput [(ngModel)]="data.primerNombre" name="primerNombre">
+    <mat-form-field class="form-field">
+      <mat-label>Tipo de Documento</mat-label>
+      <mat-select formControlName="idTipoDeDocumento">
+        <mat-option *ngFor="let docType of docTypes" [value]="docType.id">
+          {{ docType.nombre }}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
 
     <mat-form-field>
-      <mat-label>Nombre</mat-label>
-      <input matInput [(ngModel)]="data.segundoNombre" name="segundoNombre">
+      <mat-label>Documento</mat-label>
+      <input formControlName="documento" matInput [(ngModel)]="data.documento" name="documento">
     </mat-form-field>
 
     <mat-form-field>
-      <mat-label>Nombre</mat-label>
-      <input matInput [(ngModel)]="data.primerApellido" name="primerApellido">
+      <mat-label>Primer Nombre</mat-label>
+      <input formControlName="primerNombre" matInput [(ngModel)]="data.primerNombre" name="primerNombre">
     </mat-form-field>
 
     <mat-form-field>
-      <mat-label>Nombre</mat-label>
-      <input matInput [(ngModel)]="data.segundoApellido" name="segundoApellido">
+      <mat-label>Segundo Nombre</mat-label>
+      <input formControlName="segundoNombre" matInput [(ngModel)]="data.segundoNombre" name="segundoNombre">
     </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Primer Apellido</mat-label>
+      <input formControlName="primerApellido" matInput [(ngModel)]="data.primerApellido" name="primerApellido">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Segundo Apellido</mat-label>
+      <input formControlName="segundoApellido" matInput [(ngModel)]="data.segundoApellido" name="segundoApellido">
+    </mat-form-field>
+
+    <div mat-dialog-actions class="custom-dialog-actions">
+      <button mat-button (click)="onNoClick()">Cancelar</button>
+      <button mat-button [mat-dialog-close]="data" cdkFocusInitial type="submit">{{ data.id ? 'Guardar' : 'Crear' }}</button>
+    </div>
+
   </form>
 </div>
 
-<div mat-dialog-actions class="custom-dialog-actions">
-  <button mat-button (click)="onNoClick()">Cancelar</button>
-  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>{{ data.id ? 'Guardar' : 'Crear' }}</button>
-</div>
+
+
+

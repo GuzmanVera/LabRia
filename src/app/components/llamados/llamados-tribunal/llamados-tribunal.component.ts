@@ -9,6 +9,7 @@ import { LlamadosService} from 'src/app/services/llamados/llamados.service';
 import { AgregarMiembroTribunalComponent} from './agregar-miembro-tribunal/agregar-miembro-tribunal.component';
 import { Usuarios } from 'src/app/models/usuarios';
 import { UsuariosService } from 'src/app/services/usuarios/usuarios.service';
+import { LlamadosDeleteDialogComponent } from '../llamados-delete-dialog/llamados-delete-dialog.component';
 
 @Component({
   selector: 'app-llamados-tribunal',
@@ -22,9 +23,11 @@ export class LlamadosTribunalComponent implements  OnInit {
   form: FormGroup;
   usuarios: Usuarios[] = []; 
 
+
   constructor(
     public dialogRef: MatDialogRef<LlamadosTribunalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, 
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public isAdmin: any, 
     private llamadosEstadosPosiblesService: LlamadosEstadosPosiblesService, 
     private llamadosService: LlamadosService,
     private snackBar: MatSnackBar,
@@ -75,4 +78,15 @@ export class LlamadosTribunalComponent implements  OnInit {
         });
     }
   }
+
+  openRenunciarDialog(element: any, miembro: any): void {
+    this.dialog.open(LlamadosDeleteDialogComponent, {
+      width: '600px',
+      data: {
+        llamado: element,
+        miembro: miembro
+      }
+    });
+  }
+  
 }
