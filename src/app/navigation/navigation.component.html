@@ -13,35 +13,39 @@
     <!-- Esta es la lista de enlaces en la barra de navegación lateral. -->
     <mat-nav-list>
       <!-- Cada enlace navega a una ruta diferente en la aplicación cuando se hace clic en él. -->
-      <button mat-menu-item [routerLink]="['/usuarios']">
+      <button  *ngIf="userHasRole('ADMIN')"  mat-menu-item [routerLink]="['/usuarios']">
         <mat-icon> person</mat-icon>
         <a mat-list-item >Usuarios</a>
       </button>
-      <button mat-menu-item [routerLink]="['/tiposDeDocumento']">
+      <button  *ngIf="userHasRole('ADMIN')"  mat-menu-item [routerLink]="['/personas']">
+        <mat-icon>person_outline</mat-icon>
+        <a mat-list-item >Personas</a>
+      </button>
+      <button  *ngIf="userHasRole('ADMIN')"  mat-menu-item [routerLink]="['/tiposDeDocumento']">
         <mat-icon> contacts</mat-icon>
         <a mat-list-item >Tipos De Documento</a>
       </button>
-      <button mat-menu-item [routerLink]="['/areas']">
+      <button  *ngIf="userHasRole('ADMIN')"  mat-menu-item [routerLink]="['/areas']">
         <mat-icon> bubble_chart</mat-icon>
         <a mat-list-item >Áreas</a>
       </button>
-      <button mat-menu-item [routerLink]="['/tiposDeIntegrantes']">
+      <button  *ngIf="userHasRole('ADMIN')"  mat-menu-item [routerLink]="['/tiposDeIntegrantes']">
         <mat-icon>people_outline</mat-icon>
         <a mat-list-item >Tipos De Integrantes</a>
       </button>
-      <button mat-menu-item [routerLink]="['/llamadosEstadosPosibles']">
+      <button  *ngIf="userHasRole('ADMIN')"  mat-menu-item [routerLink]="['/llamadosEstadosPosibles']">
         <mat-icon> edit_attributes</mat-icon>
         <a mat-list-item >Llamados estados posibles</a>
       </button>
-      <button mat-menu-item [routerLink]="['/roles']">
+      <button  *ngIf="userHasRole('ADMIN')"  mat-menu-item [routerLink]="['/roles']">
         <mat-icon> vpn_key</mat-icon>
         <a mat-list-item >Roles</a>
       </button>
-      <button mat-menu-item [routerLink]="['/llamados']">
+      <button *ngIf=" (userHasRole('ADMIN') || userHasRole('TRIBUNAL') || userHasRole('COORDINADOR'))"  mat-menu-item [routerLink]="['/llamados']">
         <mat-icon>business_center</mat-icon>
         <a mat-list-item >Llamados</a>
       </button>
-      <button mat-menu-item [routerLink]="['/responsabilidades']">
+      <button  *ngIf="userHasRole('ADMIN')"  mat-menu-item [routerLink]="['/responsabilidades']">
         <mat-icon>receipt</mat-icon>
         <a mat-list-item >Responsabilidades</a>
       </button>

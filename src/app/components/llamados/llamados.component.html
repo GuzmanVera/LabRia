@@ -6,7 +6,7 @@
                 <input matInput (keyup)="applyFilter($event)" placeholder="Filtrar por nombre">
             </mat-form-field>
 
-            <button class="create-button" mat-raised-button color="primary" (click)="openCreateDialog()">
+            <button *ngIf="isAdmin" class="create-button" mat-raised-button color="primary" (click)="openCreateDialog()">
                 <mat-icon>add</mat-icon>Crear Llamado
             </button>
         </div>

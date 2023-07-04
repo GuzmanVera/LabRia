@@ -1,0 +1,34 @@
+.dialog-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1em;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 5px;
+    backdrop-filter: blur(5px);
+  }
+  
+  .dialog-title {
+    margin-bottom: 1em;
+  }
+  
+  .dialog-warning {
+    color: red;
+    margin-bottom: 1em;
+  }
+  
+  .dialog-content {
+    width: 100%;
+  }
+  
+  .dialog-field {
+    margin-bottom: 1em;
+  }
+  
+  .dialog-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1em;
+  }
+  

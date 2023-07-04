@@ -17,14 +17,14 @@ export class LlamadosPostulantesComponent {
   // y `this.data.postulantes` para acceder a la lista de postulantes.
   openAgregarPostulanteDialog(element: any): void {
     this.dialog.open(AgregarPostulanteComponent, {
-      width: '400px',
+      width: '300px',
       data: {...element}
     });
   }
 
   openEditarPostulanteDialog(postulante: any): void {
     this.dialog.open(EditarPostulanteComponent, {
-      width: '400px',
+      width: '300px',
       data: {...postulante}
     });
   }

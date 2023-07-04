@@ -13,8 +13,15 @@ import { RestorePasswordComponent } from './components/restore-password/restore-
 import { RolesComponent } from './components/roles/roles.component';
 import { LlamadosComponent } from './components/llamados/llamados.component';
 import { AdminGuard } from './services/admin-guard.service';
+import { AuthGuard } from './services/auth-guard.service';
 import { ResponsabilidadesComponent } from './components/responsabilidades/responsabilidades.component';
+import { HomeComponent } from './home/home.component';
 const routes: Routes = [
+  { 
+    path: '',
+    component: HomeComponent,
+    canActivate: [AuthGuard]
+  },
   {
     path:'tiposDeDocumento',
     component: TiposDeDocumentoComponent,
@@ -41,11 +48,13 @@ const routes: Routes = [
   },
   {
     path:'navbar',
-    component: NavigationComponent
+    component: NavigationComponent,
+    canActivate: [AuthGuard]
   },
   {
     path:'miPerfil',
-    component: MiPerfilComponent
+    component: MiPerfilComponent,
+    canActivate: [AuthGuard]
   },
   {
     path:'personas',
@@ -65,7 +74,8 @@ const routes: Routes = [
     canActivate: [AdminGuard]
   },
   { path: 'llamados', 
-    component: LlamadosComponent 
+    component: LlamadosComponent ,
+    canActivate: [AuthGuard]
   },
   { path: 'responsabilidades', 
     component: ResponsabilidadesComponent,

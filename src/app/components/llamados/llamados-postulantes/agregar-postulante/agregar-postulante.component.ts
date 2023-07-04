@@ -89,11 +89,11 @@ export class AgregarPostulanteComponent implements OnInit {
   onSubmit() {
     if (this.form.valid) {
       const { usuario } = this.form.value;
-       
-      if (usuario && usuario.persona) {
+      if (usuario) {
+
         const llamadoId = this.data.llamadoEstados[0].llamadoId;  
         
-        this.PostulantesService.create(llamadoId, usuario.persona.id).subscribe(response => {
+        this.PostulantesService.create(llamadoId, usuario.id).subscribe(response => {
           // Aquí puedes manejar la respuesta del servicio
           this.dialogRef.close(usuario);
         }, error => {

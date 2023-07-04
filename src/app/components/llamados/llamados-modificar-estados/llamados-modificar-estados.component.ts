@@ -22,6 +22,7 @@ export class LlamadosModificarEstadosComponent implements OnInit {
     private llamadosService: LlamadosService,
     private snackBar: MatSnackBar
   ) { 
+    
     this.form = new FormGroup({
       idEstado: new FormControl(null),
       observaciones: new FormControl('') // Aquí se añade el nuevo FormControl

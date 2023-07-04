@@ -51,6 +51,7 @@ import { LlamadosPostulantesComponent } from './components/llamados/llamados-pos
 import { AgregarPostulanteComponent } from './components/llamados/llamados-postulantes/agregar-postulante/agregar-postulante.component';
 import { EditarPostulanteComponent } from './components/llamados/llamados-postulantes/editar-postulante/editar-postulante.component';
 import { EliminarPostulanteComponent } from './components/llamados/llamados-postulantes/eliminar-postulante/eliminar-postulante.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
@@ -95,6 +96,7 @@ import { EliminarPostulanteComponent } from './components/llamados/llamados-post
     AgregarPostulanteComponent,
     EditarPostulanteComponent,
     EliminarPostulanteComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,

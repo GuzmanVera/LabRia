@@ -1,62 +1,54 @@
-<mat-card class="miembros-card">
-    <mat-card-header class="miembros-header">
-      <div>
-        <mat-card-title>Miembros del tribunal: {{data.nombre}} </mat-card-title>
-      </div>
-      <span class="header-spacer"></span>
-      <button class="create-button" mat-raised-button color="primary" (click)="openAgregarMiembroDialog(data)" matTooltip="añadir miembro">
-        <mat-icon>add</mat-icon>
-      </button>
-    </mat-card-header>
+<div class="dialog-container">
+  <div class="dialog-header">
+    <h2 class="dialog-title">Miembros del tribunal: {{data.nombre}}</h2>
+    <button *ngIf="isAdmin" mat-mini-fab color="primary" (click)="openAgregarMiembroDialog(data)" matTooltip="añadir miembro">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
 
-    <mat-card-content class="profile-content">
-        <div class="profile-field">
-          <span class="profile-label">Miembros del Tribunal:</span>
-          <table mat-table class="miembros-table mat-elevation-z8" [dataSource]="data.miembrosTribunal">
-            <!-- Definición de las columnas -->
+  <div class="dialog-content">
+    <mat-table class="miembros-table" [dataSource]="data.miembrosTribunal">
+      <ng-container matColumnDef="orden">
+        <th mat-header-cell *matHeaderCellDef>Orden</th>
+        <td mat-cell *matCellDef="let miembro">{{miembro.orden}}</td>
+      </ng-container>
 
-            <ng-container matColumnDef="orden">
-              <th mat-header-cell *matHeaderCellDef>Orden</th>
-              <td mat-cell *matCellDef="let miembro">{{miembro.orden}}</td>
-            </ng-container>
+      <ng-container matColumnDef="renuncia">
+        <th mat-header-cell *matHeaderCellDef>Renuncia</th>
+        <td mat-cell *matCellDef="let miembro">{{miembro.renuncia}}</td>
+      </ng-container>
 
-            <ng-container matColumnDef="renuncia">
-              <th mat-header-cell *matHeaderCellDef>Renuncia</th>
-              <td mat-cell *matCellDef="let miembro">{{miembro.renuncia}}</td>
-            </ng-container>
+      <ng-container matColumnDef="motivoRenuncia">
+        <th mat-header-cell *matHeaderCellDef>Motivo de renuncia</th>
+        <td mat-cell *matCellDef="let miembro">{{miembro.motivoRenuncia}}</td>
+      </ng-container>
 
-            <ng-container matColumnDef="motivoRenuncia">
-              <th mat-header-cell *matHeaderCellDef>Motivo de renuncia</th>
-              <td mat-cell *matCellDef="let miembro">{{miembro.motivoRenuncia}}</td>
-            </ng-container>
+      <ng-container matColumnDef="nombreMiembro">
+        <th mat-header-cell *matHeaderCellDef>Nombre del miembro</th>
+        <td mat-cell *matCellDef="let miembro">{{miembro.persona.primerNombre}} {{miembro.persona.primerApellido}}</td>
+      </ng-container>
 
-            <ng-container matColumnDef="nombreMiembro">
-              <th mat-header-cell *matHeaderCellDef>Nombre del miembro</th>
-              <td mat-cell *matCellDef="let miembro">{{miembro.persona.primerNombre}} {{miembro.persona.primerApellido}}</td>
-            </ng-container>
+      <ng-container matColumnDef="tipoDeIntegrante">
+        <th mat-header-cell *matHeaderCellDef>Tipo de integrante</th>
+        <td mat-cell *matCellDef="let miembro">{{miembro.tipoDeIntegrante.nombre}} orden: {{miembro.tipoDeIntegrante.orden}} </td>
+      </ng-container>
 
-            <ng-container matColumnDef="tipoDeIntegrante">
-              <th mat-header-cell *matHeaderCellDef>Tipo de integrante</th>
-              <td mat-cell *matCellDef="let miembro">{{miembro.tipoDeIntegrante.nombre}} orden: {{miembro.tipoDeIntegrante.orden}} </td>
-            </ng-container>
+       <!-- Acciones Column -->
+       <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Acciones</th>
+        <td mat-cell *matCellDef="let miembro">
+            <button *ngIf="isAdmin" mat-icon-button color="primary" (click)="openModificarMiembroDialog(miembro)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button *ngIf="isAdmin" mat-icon-button color="warn" (click)="openRenunciarDialog(data, miembro)" matTooltip="Desvincular al tribunal">
+              <mat-icon>exit_to_app</mat-icon>
+            </button> 
+        </td>
+      </ng-container>
 
-             <!-- Acciones Column -->
-             <ng-container matColumnDef="actions">
-              <th mat-header-cell *matHeaderCellDef>Acciones</th>
-              <td mat-cell *matCellDef="let miembro">
-                  <button mat-icon-button color="primary" (click)="openModificarMiembroDialog(miembro)">
-                    <mat-icon>edit</mat-icon>
-                  </button>
-                  <button *ngIf="isAdmin" mat-icon-button color="warn" (click)="openRenunciarDialog(data, miembro)" matTooltip="renunciar al tribunal">
-                    <mat-icon>exit_to_app</mat-icon>
-                  </button> 
-              </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="['orden', 'renuncia', 'motivoRenuncia', 'nombreMiembro', 'tipoDeIntegrante', 'actions']"></tr>
-            <tr mat-row *matRowDef="let row; columns: ['orden', 'renuncia', 'motivoRenuncia', 'nombreMiembro', 'tipoDeIntegrante', 'actions'];"></tr>
-          </table>
-        </div>
-      </mat-card-content>
-     
-  </mat-card>
+      <tr mat-header-row *matHeaderRowDef="['orden', 'renuncia', 'motivoRenuncia', 'nombreMiembro', 'tipoDeIntegrante', 'actions']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['orden', 'renuncia', 'motivoRenuncia', 'nombreMiembro', 'tipoDeIntegrante', 'actions'];"></tr>
+   
+    </mat-table>
+  </div>
+</div>

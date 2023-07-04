@@ -1,22 +1,41 @@
-<h2 mat-dialog-title>Modificar Estado del llamado</h2>
+<div class="dialog-container">
+  <h1 class="dialog-title">Modificar Estado del llamado</h1>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <div mat-dialog-content>
-    <mat-form-field class="form-field">
+  <div class="dialog-warning">
+    <span *ngIf="!data.estudiosMeritosCompletos && !data.entrevistasCompletas && data.isTribunal">No puedes modificar estados hasta que no se realicen todos los estudios de méritos</span>
+    <span *ngIf="!data.estudiosMeritosCompletos && !data.entrevistasCompletas && data.isAdmin">No puedes modificar estados hasta que no se avance en estudios de méritos y entrevistas</span>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="dialog-content">
+      <mat-form-field class="dialog-field">
         <mat-label>Estado</mat-label>
+
         <mat-select formControlName="idEstado">
-          <mat-option *ngFor="let estado of estados" [value]="estado.id">
-            {{ estado.nombre }}
+          <ng-container *ngFor="let estado of estados">
+            <mat-option *ngIf="
+                    (data.isAdmin && estado.id === 1) ||
+                    (data.isAdmin && (estado.id === 4 || estado.id === 5) && data.estudiosMeritosCompletos && data.entrevistasCompletas) ||
+                    (data.isTribunal && estado.id === 2 && data.estudiosMeritosCompletos) ||
+                    (data.isTribunal && estado.id === 3 && data.entrevistasCompletas)"
+                    [value]="estado.id">
+                    {{ estado.nombre }}
           </mat-option>
+  
+          </ng-container>
         </mat-select>
+
       </mat-form-field>
-      <mat-form-field>
+      
+      <mat-form-field class="dialog-field">
         <mat-label>Observaciones</mat-label>
-        <input matInput formControlName="observaciones" name="observaciones">
+        <input matInput formControlName="observaciones">
       </mat-form-field>
-  </div>
-  <div mat-dialog-actions>
-    <button mat-button (click)="dialogRef.close()">Cancelar</button>
-    <button mat-raised-button color="primary" type="submit">Modificar Estado</button>
-  </div>
-</form>
+    </div>
+
+    <div class="dialog-actions">
+      <button mat-button (click)="dialogRef.close()">Cancelar</button>
+      <button mat-raised-button color="primary" type="submit">Modificar Estado</button>
+    </div>
+  </form>
+</div>

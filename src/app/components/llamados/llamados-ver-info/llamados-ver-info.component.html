@@ -1,40 +1,34 @@
-<mat-card class="profile-card">
-    <mat-card-header class="profile-header">
-      <div>
-        <mat-card-title>Información del llamado: {{data.nombre}} </mat-card-title>
-      </div>
-      <span class="header-spacer"></span>
-      <button mat-icon-button color="primary" (click)="openEditDialog()" matTooltip="administrar postulantes">
-        <mat-icon>edit</mat-icon>
-      </button>
-      
-    </mat-card-header>
-    <mat-card-content class="profile-content">
-      <div class="profile-field">
-        <span class="profile-label">Link planilla puntajes:</span>
-        <span class="profile-value">{{data.linkPlanillaPuntajes}}</span>
-      </div>
-      <!-- Repite este patrón para los otros campos -->
-      <div class="profile-field">
-        <span class="profile-label">Link acta:</span>
-        <span class="profile-value">{{data.linkActa}}</span>
-      </div>
-      
-      <div class="profile-field">
-        <span class="profile-label">Minutos entrevista:</span>
-        <span class="profile-value">{{data.minutosEntrevista}}</span>
-      </div>
-      
-      <div class="profile-field">
-        <span class="profile-label">Responsabilidades:</span>
-        <span class="profile-value">
-          <ul>
-            <li *ngFor="let responsabilidad of responsabilidades">{{ responsabilidad.nombre }}: {{responsabilidad.descripcion}}</li>
-          </ul>
-        </span>
-      </div>
-      
+<div class="dialog-container">
+  <div class="dialog-header">
+    <div class="dialog-title">Información del llamado: {{data.nombre}}</div>
+    <button *ngIf="data.isAdmin" class="edit-button" (click)="openEditDialog()">
+      <mat-icon>edit</mat-icon>
+    </button>
+  </div>
 
-    </mat-card-content>
-    
-  </mat-card>
+  <div class="dialog-content">
+    <div class="profile-field">
+      <span class="profile-label">Link planilla puntajes:</span>
+      <span class="profile-value">{{data.linkPlanillaPuntajes}}</span>
+    </div>
+
+    <div class="profile-field">
+      <span class="profile-label">Link acta:</span>
+      <span class="profile-value">{{data.linkActa}}</span>
+    </div>
+
+    <div class="profile-field">
+      <span class="profile-label">Minutos entrevista:</span>
+      <span class="profile-value">{{data.minutosEntrevista}}</span>
+    </div>
+
+    <div class="profile-field">
+      <span class="profile-label">Responsabilidades:</span>
+      <ul class="profile-list">
+        <li class="profile-list-item" *ngFor="let responsabilidad of responsabilidades">
+          {{ responsabilidad.nombre }}: {{responsabilidad.descripcion}}
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

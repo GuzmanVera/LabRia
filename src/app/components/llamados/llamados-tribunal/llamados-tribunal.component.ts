@@ -22,22 +22,24 @@ import { LlamadosDeleteDialogComponent } from '../llamados-delete-dialog/llamado
 export class LlamadosTribunalComponent implements  OnInit {
   form: FormGroup;
   usuarios: Usuarios[] = []; 
+  isAdmin: boolean = false;
 
 
   constructor(
     public dialogRef: MatDialogRef<LlamadosTribunalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    @Inject(MAT_DIALOG_DATA) public isAdmin: any, 
     private llamadosEstadosPosiblesService: LlamadosEstadosPosiblesService, 
     private llamadosService: LlamadosService,
     private snackBar: MatSnackBar,
     public dialog: MatDialog,
     private usuariosService: UsuariosService
   ) { 
+    
     this.form = new FormGroup({
       idEstado: new FormControl(null),
       observaciones: new FormControl('') // Aquí se añade el nuevo FormControl
     });
+    this.isAdmin = this.data.isTribunal;
   }
 
   openModificarMiembroDialog(miembro: any): void {

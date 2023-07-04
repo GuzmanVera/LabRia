@@ -31,6 +31,8 @@ export class LlamadosComponent implements OnInit {
   usuarioLogueadoId!: number; // Definición de la nueva propiedad
 
   public isAdmin: boolean = false;
+  public isTribunal: boolean = false;
+  public isCoordinador: boolean = false;
   
 
   onPaginateChange(event: PageEvent) {
@@ -88,6 +90,7 @@ getLlamados(): void {
     const rolesArray = JSON.parse(roles);
     if (rolesArray.includes('ADMIN')) {
       this.isAdmin = true;
+      this.isTribunal = false;
       this.llamadosService.getAll(offset, pageSize, this.filterValue, sort).subscribe(
         response => {
           this.dataSource = response.list;
@@ -100,6 +103,7 @@ getLlamados(): void {
       );
     } else if (rolesArray.includes('TRIBUNAL')) {
       this.isAdmin = false;
+      this.isTribunal = true;
       this.tipoDeDocumentoService.getAll(0, -1, tipoDocumentoUser ?? '').subscribe(
         response => {
           if (response && response.list && response.list.length > 0) {
@@ -140,10 +144,25 @@ getLlamados(): void {
       );
       // Aquí va el resto de tu código...
     }
+    else if (rolesArray.includes('COORDINADOR')) {
+      this.isAdmin = false;
+      this.isTribunal = false;
+      this.isCoordinador = true;
+      this.llamadosService.getAll(offset, pageSize, this.filterValue, sort).subscribe(
+        response => {
+          this.dataSource = response.list;
+          console.log(this.dataSource);
+          this.totalCount = response.totalCount;
+        },
+        error => {
+          console.log('Hubo un error al recuperar los llamados:', error);
+        }
+      );
     
+    }
   }
-  
 }
+
 
 openCreateDialog(): void {
   const dialogRef = this.dialog.open(LlamadosDialogComponent, {
@@ -213,7 +232,8 @@ openCreateDialog(): void {
     console.log(element);
     const dialogRef = this.dialog.open(LlamadosVerInfoComponent, {
       width: '500px',
-      data: {...element}
+      data: {...element,
+        isAdmin: this.isAdmin}
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -223,9 +243,16 @@ openCreateDialog(): void {
 
   openAdminEstadosDialog(element: any): void {
    const dialogRef = this.dialog.open(LlamadosAdministrarEstadosComponent, {
-      width: '610px',
-      data: {...element}
-    });
+      width: '630px',
+      data: {
+        ...element, 
+        isAdmin: this.isAdmin, 
+        isTribunal: this.isTribunal, 
+        isCoordinador: this.isCoordinador,
+        estudiosMeritosCompletos: element.postulantes.every((p: { estudioMeritosRealizado: any; }) => p.estudioMeritosRealizado),
+        entrevistasCompletas: element.postulantes.every((p: { entrevistaRealizada: any; }) => p.entrevistaRealizada)
+      }
+          });
     dialogRef.afterClosed().subscribe(result => {
       
       this.getLlamados()
@@ -248,7 +275,7 @@ openCreateDialog(): void {
    openPostulantesDialog(element: any): void {
     this.dialog.open(LlamadosPostulantesComponent, {
       width: '600px',
-      data: {...element}
+      data: {...element, isAdmin:this.isAdmin, isTribunal:this.isTribunal}
     });
   }
   
