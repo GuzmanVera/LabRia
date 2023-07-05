@@ -142,7 +142,7 @@ getLlamados(): void {
           console.log('Hubo un error al recuperar los tipos de documento:', error);
         }
       );
-      // Aquí va el resto de tu código...
+   
     }
     else if (rolesArray.includes('COORDINADOR')) {
       this.isAdmin = false;

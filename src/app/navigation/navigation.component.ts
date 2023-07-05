@@ -4,7 +4,8 @@ import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
-
+import { ViewChild } from '@angular/core';
+import { MatSidenav } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-navigation',
@@ -12,13 +13,24 @@ import { Router } from '@angular/router';
   styleUrls: ['./navigation.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
+
+
 export class NavigationComponent implements OnInit {
   
+  @ViewChild('drawer', { static: true }) drawer!: MatSidenav;
+  isMenuCollapsed = false;
+
+
   constructor(
     public authService: AuthService, 
     private breakpointObserver: BreakpointObserver, 
     private router: Router // Inyecta Router aquí
   ) {}
+
+  toggleMenu() {
+    this.isMenuCollapsed = !this.isMenuCollapsed;
+    this.drawer.toggle();
+  }
 
   ngOnInit() {
     // ...
@@ -39,4 +51,7 @@ export class NavigationComponent implements OnInit {
     redirect(pagename: string) {
       this.router.navigate(['/'+pagename]);
     };
+
+   
+    
 }

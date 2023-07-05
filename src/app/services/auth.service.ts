@@ -26,7 +26,7 @@ export class AuthService {
           localStorage.setItem('email', res.email);
           localStorage.setItem('roles', JSON.stringify(res.roles)); // Los roles son un array, por lo que los convertimos a un string JSON
           this.setUserRoles(res.roles);
-          this.router.navigate(['/navbar']);
+          this.router.navigate(['/']);
           this.errorMessage.next(''); // Limpiar el mensaje de error
           this.snackBar.open(`Bienvenido! ${res.nombre}`, 'Cerrar', { duration: 5000 });
         } else {

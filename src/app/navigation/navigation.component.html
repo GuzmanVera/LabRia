@@ -1,111 +1,172 @@
 <!-- Este es el contenedor principal de la barra de navegación lateral y su contenido. -->
 <mat-sidenav-container class="sidenav-container">
-
   <!-- Esta es la barra de navegación lateral (sidenav). Se comporta de diferentes maneras dependiendo del tamaño del dispositivo. -->
-  <mat-sidenav #drawer class="sidenav" fixedInViewport
-      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-      [mode]="(isHandset$ | async) ? 'over' : 'side'"
-      [opened]="(isHandset$ | async) === false">
-
+  <mat-sidenav
+    #drawer
+    class="sidenav"
+    fixedInViewport
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="(isHandset$ | async) === false"
+  >
     <!-- La barra de herramientas en la parte superior de la barra de navegación lateral. -->
-    <mat-toolbar>Menu</mat-toolbar>
+    <mat-toolbar class="toolbar-icons-container"
+      >Menu
+      <div class="menu-buttons">
+        <button mat-icon-button routerLink="/">
+          <mat-icon>home</mat-icon>
+        </button>
+        <button mat-icon-button (click)="toggleMenu()">
+          <mat-icon>
+            chevron_left
+          </mat-icon>
+        </button>
+      </div>
+    </mat-toolbar>
 
     <!-- Esta es la lista de enlaces en la barra de navegación lateral. -->
     <mat-nav-list>
       <!-- Cada enlace navega a una ruta diferente en la aplicación cuando se hace clic en él. -->
-      <button  *ngIf="userHasRole('ADMIN')"  mat-menu-item [routerLink]="['/usuarios']">
+      <button
+        *ngIf="userHasRole('ADMIN')"
+        mat-menu-item
+        [routerLink]="['/usuarios']"
+      >
         <mat-icon> person</mat-icon>
-        <a mat-list-item >Usuarios</a>
+        <a mat-list-item>Usuarios</a>
       </button>
-      <button  *ngIf="userHasRole('ADMIN')"  mat-menu-item [routerLink]="['/personas']">
+      <button
+        *ngIf="userHasRole('ADMIN')"
+        mat-menu-item
+        [routerLink]="['/personas']"
+      >
         <mat-icon>person_outline</mat-icon>
-        <a mat-list-item >Personas</a>
+        <a mat-list-item>Personas</a>
       </button>
-      <button  *ngIf="userHasRole('ADMIN')"  mat-menu-item [routerLink]="['/tiposDeDocumento']">
+      <button
+        *ngIf="userHasRole('ADMIN')"
+        mat-menu-item
+        [routerLink]="['/tiposDeDocumento']"
+      >
         <mat-icon> contacts</mat-icon>
-        <a mat-list-item >Tipos De Documento</a>
+        <a mat-list-item>Tipos De Documento</a>
       </button>
-      <button  *ngIf="userHasRole('ADMIN')"  mat-menu-item [routerLink]="['/areas']">
+      <button
+        *ngIf="userHasRole('ADMIN')"
+        mat-menu-item
+        [routerLink]="['/areas']"
+      >
         <mat-icon> bubble_chart</mat-icon>
-        <a mat-list-item >Áreas</a>
+        <a mat-list-item>Áreas</a>
       </button>
-      <button  *ngIf="userHasRole('ADMIN')"  mat-menu-item [routerLink]="['/tiposDeIntegrantes']">
+      <button
+        *ngIf="userHasRole('ADMIN')"
+        mat-menu-item
+        [routerLink]="['/tiposDeIntegrantes']"
+      >
         <mat-icon>people_outline</mat-icon>
-        <a mat-list-item >Tipos De Integrantes</a>
+        <a mat-list-item>Tipos De Integrantes</a>
       </button>
-      <button  *ngIf="userHasRole('ADMIN')"  mat-menu-item [routerLink]="['/llamadosEstadosPosibles']">
+      <button
+        *ngIf="userHasRole('ADMIN')"
+        mat-menu-item
+        [routerLink]="['/llamadosEstadosPosibles']"
+      >
         <mat-icon> edit_attributes</mat-icon>
-        <a mat-list-item >Llamados estados posibles</a>
+        <a mat-list-item>Llamados estados posibles</a>
       </button>
-      <button  *ngIf="userHasRole('ADMIN')"  mat-menu-item [routerLink]="['/roles']">
+      <button
+        *ngIf="userHasRole('ADMIN')"
+        mat-menu-item
+        [routerLink]="['/roles']"
+      >
         <mat-icon> vpn_key</mat-icon>
-        <a mat-list-item >Roles</a>
+        <a mat-list-item>Roles</a>
       </button>
-      <button *ngIf=" (userHasRole('ADMIN') || userHasRole('TRIBUNAL') || userHasRole('COORDINADOR'))"  mat-menu-item [routerLink]="['/llamados']">
+      <button
+        *ngIf="
+          userHasRole('ADMIN') ||
+          userHasRole('TRIBUNAL') ||
+          userHasRole('COORDINADOR')
+        "
+        mat-menu-item
+        [routerLink]="['/llamados']"
+      >
         <mat-icon>business_center</mat-icon>
-        <a mat-list-item >Llamados</a>
+        <a mat-list-item>Llamados</a>
       </button>
-      <button  *ngIf="userHasRole('ADMIN')"  mat-menu-item [routerLink]="['/responsabilidades']">
+      <button
+        *ngIf="userHasRole('ADMIN')"
+        mat-menu-item
+        [routerLink]="['/responsabilidades']"
+      >
         <mat-icon>receipt</mat-icon>
-        <a mat-list-item >Responsabilidades</a>
+        <a mat-list-item>Responsabilidades</a>
       </button>
     </mat-nav-list>
-
   </mat-sidenav>
 
   <!-- Este es el contenido principal de la aplicación que aparece junto a la barra de navegación lateral. -->
-  <mat-sidenav-content  >
-
+  <mat-sidenav-content>
     <!-- La barra de herramientas en la parte superior del contenido principal. -->
     <mat-toolbar color="primary" class="toolbar">
-
-      <!-- El botón que abre y cierra la barra de navegación lateral. Solo se muestra en dispositivos móviles. -->
+      <!-- El botón que abre la barra de navegación lateral. Se muestra si el sidenav está cerrado. -->
       <button
-          type="button"
-          aria-label="Toggle sidenav"
-          mat-icon-button
-          (click)="drawer.toggle()"
-          *ngIf="isHandset$ | async">
-          <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="!drawer.opened"
+      >
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
 
       <!-- El título de la aplicación. -->
-      <img class="logo" src="https://red.utec.edu.uy/wp-content/uploads/2018/11/09-Isotipo-1.png" alt="Logo">
+      <img
+        class="logo"
+        src="https://red.utec.edu.uy/wp-content/uploads/2018/11/09-Isotipo-1.png"
+        alt="Logo"
+      />
       <span class="long-title">Sistema de gestión de llamados docentes</span>
       <span class="short-title">SGD</span>
 
-
       <!-- Un elemento de relleno que empuja el siguiente contenido (el botón del menú del perfil de usuario) al extremo derecho de la barra de herramientas. -->
-      <span class="toolbar-spacer"></span> 
+      <span class="toolbar-spacer"></span>
 
       <!-- El botón del menú del perfil de usuario. Solo se muestra si el usuario está autenticado. -->
       <button
-          *ngIf="authService.isLoggedIn()"
-          mat-icon-button
-          [matMenuTriggerFor]="menu">
-          <mat-icon>account_circle</mat-icon>
+        *ngIf="authService.isLoggedIn()"
+        mat-icon-button
+        [matMenuTriggerFor]="menu"
+      >
+        <mat-icon>account_circle</mat-icon>
       </button>
-
     </mat-toolbar>
 
     <!-- Este es un marcador de posición para el contenido principal de la aplicación que se inyectará aquí. -->
-  
+ 
     <ng-content></ng-content>
-
+  <!--  <footer class="footer">
+      <div class="container">
+        <span>© 2023 Universidad Tecnológica</span>
+      </div>
+    </footer>*/-->
   </mat-sidenav-content>
 
   <!-- Este es el menú del perfil de usuario que se muestra cuando se hace clic en el botón del perfil de usuario. -->
   <mat-menu #menu="matMenu">
     <!-- El primer elemento del menú permite al usuario ver su perfil. -->
     <button mat-menu-item (click)="redirect('miPerfil')">
-        <mat-icon>visibility</mat-icon>
-        <span>Ver perfil</span>
+      <mat-icon>visibility</mat-icon>
+      <span>Ver perfil</span>
     </button>
     <!-- El segundo elemento del menú permite al usuario cerrar la sesión. -->
-    <button mat-menu-item (click)="authService.logout()"> 
+    <button mat-menu-item (click)="authService.logout()">
       <mat-icon>exit_to_app</mat-icon>
       <span>Salir</span>
     </button>
   </mat-menu>
 
-</mat-sidenav-container >
+  
+  
+</mat-sidenav-container>

@@ -1,0 +1,58 @@
+@import '@angular/material/theming';
+
+
+@include mat-core();
+
+$primary: mat-palette($mat-indigo);
+$accent:  mat-palette($mat-pink, A200, A100, A400);
+
+$theme: mat-light-theme($primary, $accent);
+
+
+
+
+mat-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.hero-section {
+  background-color: mat-color($primary);
+  color: white;
+  text-align: center;
+  padding: 50px 0;
+
+  h1 {
+    font-size: 2.5em;
+  }
+
+  .hero-subtitle {
+    font-size: 1.5em;
+    margin-top: 1em;
+  }
+}
+
+.activities-section {
+  padding: 2em;
+  max-width: 800px;
+  margin: 0 auto;
+  margin-bottom: 2rem;
+
+  h2 {
+    font-size: 2em;
+    margin-bottom: 1em;
+  }
+
+  mat-list-item {
+    height: auto !important; /* Esto asegura que el elemento tenga la altura de su contenido */
+    min-height: 50px; /* Puedes ajustar este valor a tus necesidades */
+  }
+  
+  .header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: top;
+  }
+  
+}

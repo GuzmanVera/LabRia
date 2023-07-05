@@ -52,7 +52,8 @@ import { AgregarPostulanteComponent } from './components/llamados/llamados-postu
 import { EditarPostulanteComponent } from './components/llamados/llamados-postulantes/editar-postulante/editar-postulante.component';
 import { EliminarPostulanteComponent } from './components/llamados/llamados-postulantes/eliminar-postulante/eliminar-postulante.component';
 import { HomeComponent } from './home/home.component';
-
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 @NgModule({
   declarations: [
     AppComponent,
@@ -106,7 +107,11 @@ import { HomeComponent } from './home/home.component';
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory,
+    }),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
