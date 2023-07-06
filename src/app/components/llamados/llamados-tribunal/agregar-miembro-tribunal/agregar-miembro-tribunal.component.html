@@ -1,7 +1,7 @@
 <div class="dialog-container">
   <h2 class="dialog-title">Agregar miembro al tribunal</h2>
 
-  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="dialog-form">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="dialog-form" id="myForm">
     <mat-form-field class="dialog-form-field">
       <mat-label>Selecciona un usuario</mat-label>
       <mat-select formControlName="usuario">
@@ -19,10 +19,15 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
+  </form>
 
+  <div class="button-container">
+    <div class="dialog-actions">
+      <button mat-button color="primary" type="submit" form="myForm">Agregar</button>
+    </div>
+    
     <div class="dialog-actions">
       <button mat-button (click)="onNoClick()">Cancelar</button>
-      <button mat-button color="primary" type="submit">Agregar</button>
     </div>
-  </form>
+  </div>
 </div>

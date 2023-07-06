@@ -11,17 +11,21 @@ export class LlamadosService {
 
   constructor(private http: HttpClient) { }
 
-  getAll(offset: number, limit: number, filterValue?: string, sort?: string): Observable<any> {
+  getAll(offset: number, limit: number, filterValue?: string, sort?: string, field?: string): Observable<any> {
     const body = {
       limit: limit,
       offset: offset,
       id: 0,
-      filters: { activo: null, nombre: "", identificador: "", "personaTribunalId": filterValue || -1 },
+      filters: { 
+        [field || '']: filterValue || "", 
+        identificador: field === 'identificador' ? filterValue : '' 
+      },
       orders: sort ? [sort] : [""]
     };
   
     return this.http.post<any>(`${this.apiURL}/Paged`, body);
   }
+  
   
 
   get(id: number): Observable<Llamados> {

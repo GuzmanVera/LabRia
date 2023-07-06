@@ -12,7 +12,7 @@ import { PersonasService } from 'src/app/services/personas/personas.service';
   styleUrls: ['./personas.component.scss']
 })
 export class PersonasComponent {
-  displayedColumns: string[] = ['id', 'primerNombre', 'activo', 'actions'];
+  displayedColumns: string[] = ['id', 'tipoDeDocumento', 'documento' ,'primerNombre','primerApellido', 'activo', 'actions'];
   dataSource: Personas[] = [];  // inicializa el dataSource aquí
   totalCount: number = 0;
   pageEvent: PageEvent = { pageIndex: 0, pageSize: 10, length: 0 };
@@ -104,7 +104,7 @@ export class PersonasComponent {
 
   openEditDialog(personas: Personas): void {
     const dialogRef = this.dialog.open(PersonasDialogComponent, {
-      width: '250px',
+      width: '275px',
       data: { ...personas } // Hacemos una copia del objeto para no modificar el original.
     });
 
