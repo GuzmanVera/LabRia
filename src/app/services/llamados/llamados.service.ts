@@ -103,11 +103,12 @@ export class LlamadosService {
         
         // Si no encontramos al miembro, asumimos que no ha renunciado
         if (!miembro) {
-          return false;
+          return true;
         }
-  
+ 
         // Si encontramos al miembro, retornamos su valor de renuncia
-        return miembro.renuncia;
+        return false;
+
       })
     );
   }

@@ -11,7 +11,7 @@ import { LlamadosTribunalComponent } from './llamados-tribunal/llamados-tribunal
 import { LlamadosPostulantesComponent } from './llamados-postulantes/llamados-postulantes.component';
 import { PersonasService } from 'src/app/services/personas/personas.service';
 import { TiposDeDocumentoService } from 'src/app/services/tipos-de-documento/tipos-de-documento.service';
-import { switchMap, filter, toArray, map } from 'rxjs/operators';
+import { switchMap, filter, toArray, map, concatMap } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { MatSelectChange } from '@angular/material/select';
 
@@ -83,14 +83,14 @@ export class LlamadosComponent implements OnInit {
 
   applyFilter(event: Event | MatSelectChange) {
     const stateMap = {
-      'TODOS': '0',
-      'Iniciado': '1',
+      TODOS: '0',
+      Iniciado: '1',
       'Estudio de Méritos Realizado': '2',
       'Entrevistas Realizadas': '3',
       'Psicotécnicos Realizados': '4',
-      'Finalizado': '5'
+      Finalizado: '5',
     };
-  
+
     if (event instanceof MatSelectChange) {
       // Esto es un MatSelectChange
       if (typeof event.value === 'string' && event.value in stateMap) {
@@ -100,11 +100,9 @@ export class LlamadosComponent implements OnInit {
       // Esto es un Event
       this.filterValue = (event.target as HTMLInputElement).value;
     }
-  
+
     this.getLlamados(this.selectedField);
   }
-  
-  
 
   getLlamados(field: string): void {
     const pageIndex = this.pageEvent ? this.pageEvent.pageIndex : 0;
@@ -159,18 +157,21 @@ export class LlamadosComponent implements OnInit {
                         switchMap((response: { list: Llamados[] }) =>
                           from(response.list)
                         ),
-                        switchMap((llamado: Llamados) =>
-                          this.llamadosService
-                            .haRenunciado(llamado.id, this.usuarioLogueadoId)
-                            .pipe(
-                              map((haRenunciado) => {
-                                if (!haRenunciado) {
-                                  return llamado;
-                                } else {
-                                  return null;
-                                }
-                              })
-                            )
+                        concatMap(
+                          (
+                            llamado: Llamados
+                          ) =>
+                            this.llamadosService
+                              .haRenunciado(llamado.id, this.usuarioLogueadoId)
+                              .pipe(
+                                map((haRenunciado) => {
+                                  if (!haRenunciado) {
+                                    return llamado;
+                                  } else {
+                                    return null;
+                                  }
+                                })
+                              )
                         ),
                         filter((llamado) => !!llamado),
                         toArray()

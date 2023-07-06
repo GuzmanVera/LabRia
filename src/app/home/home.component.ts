@@ -3,7 +3,7 @@ import { LlamadosService } from '../services/llamados/llamados.service';
 import { Llamados } from '../models/llamados';
 import { TiposDeDocumentoService } from '../services/tipos-de-documento/tipos-de-documento.service';
 import { PersonasService } from '../services/personas/personas.service';
-import { filter, from, map, switchMap, toArray } from 'rxjs';
+import { concatMap, filter, from, map, switchMap, toArray } from 'rxjs';
 import { CalendarEvent, CalendarView } from 'angular-calendar';
 import { startOfDay } from 'date-fns';
 
@@ -81,17 +81,19 @@ getLlamados(): void {
             this.personasService.getPorDocumento(tipoDocumentoId, documentoUser ?? '').subscribe(
               response => {
                 this.usuarioLogueadoId = response.id;
-                this.llamadosService.getAll(0, 1, this.usuarioLogueadoId.toString()).pipe(
+                this.llamadosService.getAll(0, -1, this.usuarioLogueadoId.toString()).pipe(
                   switchMap((response: { list: Llamados[] }) => from(response.list)),
-                  switchMap((llamado: Llamados) => this.llamadosService.haRenunciado(llamado.id, this.usuarioLogueadoId).pipe(
-                    map(haRenunciado => {
-                      if (!haRenunciado) {
-                        return llamado;
-                      } else {
-                        return null;
-                      }
-                    })
-                  )),
+                  concatMap((llamado: Llamados) => // <-- Cambia switchMap por concatMap
+                    this.llamadosService.haRenunciado(llamado.id, this.usuarioLogueadoId).pipe(
+                      map(haRenunciado => {
+                        if (!haRenunciado) {
+                          return llamado;
+                        } else {
+                          return null;
+                        }
+                      })
+                    )
+                  ),
                   filter(llamado => !!llamado),
                   toArray()
                 ).subscribe(
