@@ -82,7 +82,8 @@ export class LlamadosDialogComponent implements OnInit {
   onSubmit() {
     if (this.llamadosForm.valid) {
       const llamado = this.llamadosForm.value;
-      if (this.data) { // En caso de edición
+      console.log(this.data);
+      if (this.data.id != null) { // En caso de edición
         this.updateLlamado(llamado);
       } else { // En caso de creación
         this.registerLlamado(llamado);
@@ -91,6 +92,7 @@ export class LlamadosDialogComponent implements OnInit {
 }
 
   registerLlamado(llamado: any) {
+    console.log(llamado);
     this.llamadosService.create(llamado).subscribe(
       response => {
         this.snackBar.open('Registro de llamado realizado con éxito', 'Cerrar', { duration: 5000 });
